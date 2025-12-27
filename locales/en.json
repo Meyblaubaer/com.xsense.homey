@@ -1,0 +1,14 @@
+{
+  "pair": {
+    "error": {
+      "login_failed": "Login failed. Please check your credentials.",
+      "list_failed": "Failed to retrieve devices. Please try again."
+    }
+  },
+  "error": {
+    "initialization_failed": "Device initialization failed",
+    "device_not_found": "Device not found",
+    "update_failed": "Failed to update device data",
+    "test_alarm_failed": "Failed to test alarm"
+  }
+}

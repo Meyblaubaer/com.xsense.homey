@@ -1,0 +1,31 @@
+{
+  "title": {
+    "en": "Humidity changed",
+    "de": "Luftfeuchtigkeit geändert"
+  },
+  "tokens": [
+    {
+      "name": "device",
+      "type": "string",
+      "title": {
+        "en": "Device",
+        "de": "Gerät"
+      }
+    },
+    {
+      "name": "humidity",
+      "type": "number",
+      "title": {
+        "en": "Humidity (%)",
+        "de": "Luftfeuchtigkeit (%)"
+      }
+    }
+  ],
+  "args": [
+    {
+      "type": "device",
+      "name": "device",
+      "filter": "driver_id=temperature-sensor"
+    }
+  ]
+}

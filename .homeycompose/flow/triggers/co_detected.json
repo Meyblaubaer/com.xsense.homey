@@ -1,0 +1,31 @@
+{
+  "title": {
+    "en": "CO detected",
+    "de": "CO erkannt"
+  },
+  "tokens": [
+    {
+      "name": "device",
+      "type": "string",
+      "title": {
+        "en": "Device",
+        "de": "Gerät"
+      }
+    },
+    {
+      "name": "co_level",
+      "type": "number",
+      "title": {
+        "en": "CO Level (ppm)",
+        "de": "CO-Level (ppm)"
+      }
+    }
+  ],
+  "args": [
+    {
+      "type": "device",
+      "name": "device",
+      "filter": "driver_id=smoke-detector"
+    }
+  ]
+}

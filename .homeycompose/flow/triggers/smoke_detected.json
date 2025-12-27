@@ -1,0 +1,23 @@
+{
+  "title": {
+    "en": "Smoke detected",
+    "de": "Rauch erkannt"
+  },
+  "tokens": [
+    {
+      "name": "device",
+      "type": "string",
+      "title": {
+        "en": "Device",
+        "de": "Gerät"
+      }
+    }
+  ],
+  "args": [
+    {
+      "type": "device",
+      "name": "device",
+      "filter": "driver_id=smoke-detector"
+    }
+  ]
+}

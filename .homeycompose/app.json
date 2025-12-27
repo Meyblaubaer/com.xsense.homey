@@ -1,0 +1,25 @@
+{
+  "id": "com.xsense.homey",
+  "version": "1.0.0",
+  "compatibility": ">=5.0.0",
+  "sdk": 3,
+  "name": {
+    "en": "XSense",
+    "de": "XSense"
+  },
+  "description": {
+    "en": "Control your XSense smoke detectors and sensors",
+    "de": "Steuere deine XSense Rauchmelder und Sensoren"
+  },
+  "category": [
+    "security"
+  ],
+  "brandColor": "#FF6B35",
+  "author": {
+    "name": "Sven-Christian Meyhoefer",
+    "email": ""
+  },
+  "permissions": [
+    "homey:manager:api"
+  ]
+}
