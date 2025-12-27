@@ -16,6 +16,7 @@
     "security"
   ],
   "brandColor": "#FF6B35",
+  "icon": "assets/icon.svg",
   "author": {
     "name": "Sven-Christian Meyhoefer",
     "email": ""

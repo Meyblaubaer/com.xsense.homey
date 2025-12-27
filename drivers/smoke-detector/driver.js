@@ -133,7 +133,8 @@ class SmokeDetectorDriver extends Homey.Driver {
         return true;
       } catch (error) {
         this.error('Login failed:', error);
-        throw new Error(this.homey.__('pair.error.login_failed'));
+        // THROW RAW ERROR TO DEBUG "INSTALL" VS "RUN"
+        throw new Error(`Login failed: ${error.message || error}`);
       }
     });
 
