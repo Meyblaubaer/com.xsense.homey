@@ -271,8 +271,8 @@
       },
       "class": "sensor",
       "images": {
-        "large": "assets/images/large.png",
-        "small": "assets/images/small.png"
+        "large": "drivers/smoke-detector/assets/images/large.png",
+        "small": "drivers/smoke-detector/assets/images/small.png"
       },
       "capabilities": [
         "alarm_smoke",
@@ -374,8 +374,8 @@
       },
       "class": "sensor",
       "images": {
-        "large": "assets/images/large.png",
-        "small": "assets/images/small.png"
+        "large": "drivers/temperature-sensor/assets/images/large.png",
+        "small": "drivers/temperature-sensor/assets/images/small.png"
       },
       "capabilities": [
         "measure_temperature",
@@ -480,8 +480,8 @@
       },
       "class": "sensor",
       "images": {
-        "large": "assets/images/large.png",
-        "small": "assets/images/small.png"
+        "large": "drivers/water-sensor/assets/images/large.png",
+        "small": "drivers/water-sensor/assets/images/small.png"
       },
       "capabilities": [
         "alarm_water",

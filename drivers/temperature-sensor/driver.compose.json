@@ -5,8 +5,8 @@
   },
   "class": "sensor",
   "images": {
-    "large": "assets/images/large.png",
-    "small": "assets/images/small.png"
+    "large": "drivers/temperature-sensor/assets/images/large.png",
+    "small": "drivers/temperature-sensor/assets/images/small.png"
   },
   "capabilities": [
     "measure_temperature",

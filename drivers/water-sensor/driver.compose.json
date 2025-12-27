@@ -5,8 +5,8 @@
   },
   "class": "sensor",
   "images": {
-    "large": "assets/images/large.png",
-    "small": "assets/images/small.png"
+    "large": "drivers/water-sensor/assets/images/large.png",
+    "small": "drivers/water-sensor/assets/images/small.png"
   },
   "capabilities": [
     "alarm_water",
