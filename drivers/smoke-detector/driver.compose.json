@@ -16,6 +16,11 @@
     "measure_humidity",
     "alarm_co"
   ],
+  "energy": {
+    "batteries": [
+      "CR123A"
+    ]
+  },
   "platforms": [
     "local"
   ],
