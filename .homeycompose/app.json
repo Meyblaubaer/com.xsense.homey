@@ -4,8 +4,8 @@
   "compatibility": ">=5.0.0",
   "sdk": 3,
   "name": {
-    "en": "XSense",
-    "de": "XSense"
+    "en": "X-Sense",
+    "de": "X-Sense"
   },
   "description": {
     "en": "Control your XSense smoke detectors and sensors",

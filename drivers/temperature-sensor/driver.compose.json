@@ -4,6 +4,10 @@
     "de": "Temperatur- & Luftfeuchtigkeitssensor"
   },
   "class": "sensor",
+  "images": {
+    "large": "assets/images/large.png",
+    "small": "assets/images/small.png"
+  },
   "capabilities": [
     "measure_temperature",
     "measure_humidity",

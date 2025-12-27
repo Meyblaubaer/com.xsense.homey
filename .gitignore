@@ -9,3 +9,5 @@ env.json
 /.homeybuild/
 *.pcap
 *.txt
+!README.txt
+

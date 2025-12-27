@@ -4,6 +4,10 @@
     "de": "Rauchmelder"
   },
   "class": "sensor",
+  "images": {
+    "large": "assets/images/large.png",
+    "small": "assets/images/small.png"
+  },
   "capabilities": [
     "alarm_smoke",
     "alarm_battery",
@@ -19,33 +23,48 @@
     "cloud"
   ],
   "pair": [
-  {
-    "id": "login_credentials",
-    "template": "login_credentials",
-    "options": {
-      "title": { "en": "Login to XSense", "de": "Bei XSense anmelden" },
-      "usernameLabel": { "en": "Email", "de": "E-Mail" },
-      "usernamePlaceholder": { "en": "email@example.com", "de": "email@beispiel.de" },
-      "passwordLabel": { "en": "Password", "de": "Passwort" },
-      "passwordPlaceholder": { "en": "Password", "de": "Passwort" }
+    {
+      "id": "login_credentials",
+      "template": "login_credentials",
+      "options": {
+        "title": {
+          "en": "Login to XSense",
+          "de": "Bei XSense anmelden"
+        },
+        "usernameLabel": {
+          "en": "Email",
+          "de": "E-Mail"
+        },
+        "usernamePlaceholder": {
+          "en": "email@example.com",
+          "de": "email@beispiel.de"
+        },
+        "passwordLabel": {
+          "en": "Password",
+          "de": "Passwort"
+        },
+        "passwordPlaceholder": {
+          "en": "Password",
+          "de": "Passwort"
+        }
+      }
+    },
+    {
+      "id": "list_devices",
+      "template": "list_devices",
+      "navigation": {
+        "prev": "login_credentials",
+        "next": "add_devices"
+      }
+    },
+    {
+      "id": "add_devices",
+      "template": "add_devices",
+      "navigation": {
+        "prev": "list_devices"
+      }
     }
-  },
-  {
-    "id": "list_devices",
-    "template": "list_devices",
-    "navigation": {
-      "prev": "login_credentials",
-      "next": "add_devices"
-    }
-  },
-  {
-    "id": "add_devices",
-    "template": "add_devices",
-    "navigation": {
-      "prev": "list_devices"
-    }
-  }
-],
+  ],
   "settings": [
     {
       "type": "group",

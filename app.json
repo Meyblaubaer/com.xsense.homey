@@ -5,8 +5,8 @@
   "compatibility": ">=5.0.0",
   "sdk": 3,
   "name": {
-    "en": "XSense",
-    "de": "XSense"
+    "en": "X-Sense",
+    "de": "X-Sense"
   },
   "description": {
     "en": "Control your XSense smoke detectors and sensors",
@@ -16,7 +16,10 @@
     "security"
   ],
   "brandColor": "#FF6B35",
-  "icon": "assets/icon.svg",
+  "images": {
+    "large": "assets/images/large.png",
+    "small": "assets/images/small.png"
+  },
   "author": {
     "name": "Sven-Christian Meyhoefer",
     "email": ""
@@ -267,6 +270,10 @@
         "de": "Rauchmelder"
       },
       "class": "sensor",
+      "images": {
+        "large": "assets/images/large.png",
+        "small": "assets/images/small.png"
+      },
       "capabilities": [
         "alarm_smoke",
         "alarm_battery",
@@ -361,6 +368,10 @@
         "de": "Temperatur- & Luftfeuchtigkeitssensor"
       },
       "class": "sensor",
+      "images": {
+        "large": "assets/images/large.png",
+        "small": "assets/images/small.png"
+      },
       "capabilities": [
         "measure_temperature",
         "measure_humidity",
@@ -458,6 +469,10 @@
         "de": "Wasserleck-Detektor"
       },
       "class": "sensor",
+      "images": {
+        "large": "assets/images/large.png",
+        "small": "assets/images/small.png"
+      },
       "capabilities": [
         "alarm_water",
         "measure_battery",
