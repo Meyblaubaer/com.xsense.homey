@@ -27,19 +27,12 @@ class XSenseApp extends Homey.App {
    */
   _registerFlowCards() {
     // Triggers
-    this.homey.flow.getDeviceTriggerCard('smoke_detected');
     this.homey.flow.getDeviceTriggerCard('co_detected');
-    this.homey.flow.getDeviceTriggerCard('low_battery');
     this.homey.flow.getDeviceTriggerCard('device_muted');
-    this.homey.flow.getDeviceTriggerCard('water_detected');
-    this.homey.flow.getDeviceTriggerCard('temperature_changed');
-    this.homey.flow.getDeviceTriggerCard('humidity_changed');
 
     // Conditions
-    const isSmokeTriggerCard = this.homey.flow.getConditionCard('is_smoke_detected');
-    isSmokeTriggerCard.registerRunListener(async (args, state) => {
-      return args.device.getCapabilityValue('alarm_smoke');
-    });
+    // Custom flow condition removed
+
 
     // Actions
     const testAlarmCard = this.homey.flow.getActionCard('test_alarm');

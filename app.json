@@ -9,8 +9,8 @@
     "de": "X-Sense"
   },
   "description": {
-    "en": "Smart home security the way it should be.",
-    "de": "Intelligente Sicherheit für dein Zuhause, wie sie sein sollte."
+    "en": "Ultimate home safety with X-Sense smart devices.",
+    "de": "Ultimative Sicherheit für dein Zuhause mit X-Sense."
   },
   "category": [
     "security"
@@ -81,6 +81,110 @@
           }
         ],
         "id": "device_muted"
+      },
+      {
+        "title": {
+          "en": "Humidity changed",
+          "de": "Luftfeuchtigkeit geändert"
+        },
+        "tokens": [
+          {
+            "name": "device",
+            "type": "string",
+            "title": {
+              "en": "Device",
+              "de": "Gerät"
+            }
+          },
+          {
+            "name": "humidity",
+            "type": "number",
+            "title": {
+              "en": "Humidity (%)",
+              "de": "Luftfeuchtigkeit (%)"
+            }
+          }
+        ],
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=temperature-sensor"
+          }
+        ],
+        "id": "humidity_changed"
+      },
+      {
+        "title": {
+          "en": "Low battery",
+          "de": "Batterie schwach"
+        },
+        "tokens": [
+          {
+            "name": "device",
+            "type": "string",
+            "title": {
+              "en": "Device",
+              "de": "Gerät"
+            }
+          },
+          {
+            "name": "battery_level",
+            "type": "number",
+            "title": {
+              "en": "Battery Level (%)",
+              "de": "Batteriestand (%)"
+            }
+          }
+        ],
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=smoke-detector"
+          }
+        ],
+        "id": "low_battery"
+      },
+      {
+        "title": {
+          "en": "Water leak detected",
+          "de": "Wasserleck erkannt"
+        },
+        "tokens": [
+          {
+            "name": "device",
+            "type": "string",
+            "title": {
+              "en": "Device",
+              "de": "Gerät"
+            }
+          }
+        ],
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=water-sensor"
+          }
+        ],
+        "id": "water_detected"
+      }
+    ],
+    "conditions": [
+      {
+        "title": {
+          "en": "Smoke is !{{detected|not detected}}",
+          "de": "Rauch ist !{{erkannt|nicht erkannt}}"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=smoke-detector"
+          }
+        ],
+        "id": "is_smoke_detected"
       }
     ],
     "actions": [
