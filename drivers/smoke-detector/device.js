@@ -112,13 +112,7 @@ class SmokeDetectorDevice extends Homey.Device {
         const smokeDetected = status === true || status === 1 || status === '1' || status === 'true';
         await this.setCapabilityValue('alarm_smoke', smokeDetected);
 
-        // Trigger flow if smoke was just detected
-        if (smokeDetected && !prevSmoke) {
-          await this.homey.flow.getDeviceTriggerCard('smoke_detected')
-            .trigger(this, {
-              device: this.getName()
-            });
-        }
+
       }
 
       // Update battery level
@@ -140,14 +134,7 @@ class SmokeDetectorDevice extends Homey.Device {
           const lowBattery = batteryLevel < 20;
           await this.setCapabilityValue('alarm_battery', lowBattery);
 
-          // Trigger flow if battery became low
-          if (lowBattery && !prevBattery) {
-            await this.homey.flow.getDeviceTriggerCard('low_battery')
-              .trigger(this, {
-                device: this.getName(),
-                battery_level: batteryLevel
-              });
-          }
+
         }
       }
 

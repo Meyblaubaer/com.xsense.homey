@@ -1,6 +1,6 @@
 {
-  "id": "com.xsense.homey",
-  "version": "1.0.0",
+  "id": "com.xsense.svenm",
+  "version": "1.0.1",
   "compatibility": ">=5.0.0",
   "sdk": 3,
   "name": {
@@ -8,8 +8,8 @@
     "de": "X-Sense"
   },
   "description": {
-    "en": "Control your XSense smoke detectors and sensors",
-    "de": "Steuere deine XSense Rauchmelder und Sensoren"
+    "en": "Ultimate home safety with X-Sense smart devices.",
+    "de": "Ultimative Sicherheit für dein Zuhause mit X-Sense."
   },
   "category": [
     "security"
@@ -22,8 +22,5 @@
   "author": {
     "name": "Sven-Christian Meyhoefer",
     "email": ""
-  },
-  "permissions": [
-    "homey:manager:api"
-  ]
+  }
 }

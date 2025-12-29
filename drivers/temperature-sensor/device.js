@@ -69,15 +69,7 @@ class TemperatureSensorDevice extends Homey.Device {
         if (temp !== undefined && temp !== null) {
           await this.setCapabilityValue('measure_temperature', temp);
 
-          // Trigger flow if temperature changed significantly (more than 0.5°C)
-          if (this.previousTemp !== null && Math.abs(temp - this.previousTemp) > 0.5) {
-            await this.homey.flow.getDeviceTriggerCard('temperature_changed')
-              .trigger(this, {
-                device: this.getName(),
-                temperature: temp
-              });
-          }
-          this.previousTemp = temp;
+
         }
       }
 
@@ -88,13 +80,12 @@ class TemperatureSensorDevice extends Homey.Device {
           await this.setCapabilityValue('measure_humidity', humidity);
 
           // Trigger flow if humidity changed significantly (more than 5%)
+          // Custom flow card removed as it duplicates standard capability behavior
+          /*
           if (this.previousHumidity !== null && Math.abs(humidity - this.previousHumidity) > 5) {
-            await this.homey.flow.getDeviceTriggerCard('humidity_changed')
-              .trigger(this, {
-                device: this.getName(),
-                humidity: humidity
-              });
+             // Logic removed
           }
+          */
           this.previousHumidity = humidity;
         }
       }
@@ -111,11 +102,7 @@ class TemperatureSensorDevice extends Homey.Device {
           await this.setCapabilityValue('alarm_battery', lowBattery);
 
           if (lowBattery && !prevBattery) {
-            await this.homey.flow.getDeviceTriggerCard('low_battery')
-              .trigger(this, {
-                device: this.getName(),
-                battery_level: batteryLevel
-              });
+            // Custom flow card removed
           }
         }
       }

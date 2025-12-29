@@ -77,12 +77,12 @@ class WaterSensorDevice extends Homey.Device {
         await this.setCapabilityValue('alarm_water', waterDetected);
 
         // Trigger flow if water was just detected
+        // Custom flow card removed
+        /*
         if (waterDetected && !prevWater) {
-          await this.homey.flow.getDeviceTriggerCard('water_detected')
-            .trigger(this, {
-              device: this.getName()
-            });
+           // Logic removed
         }
+        */
       }
 
       // Update battery level
@@ -97,11 +97,7 @@ class WaterSensorDevice extends Homey.Device {
           await this.setCapabilityValue('alarm_battery', lowBattery);
 
           if (lowBattery && !prevBattery) {
-            await this.homey.flow.getDeviceTriggerCard('low_battery')
-              .trigger(this, {
-                device: this.getName(),
-                battery_level: batteryLevel
-              });
+            // Custom flow card removed
           }
         }
       }
