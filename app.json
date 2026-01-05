@@ -27,7 +27,8 @@
   "bugs": {
     "url": "https://github.com/Meyblaubaer/com.xsense.svenm/issues"
   },
-  "source": "https://github.com/Meyblaubaer/com.xsense.svenm""flow": {
+  "source": "https://github.com/Meyblaubaer/com.xsense.svenm",
+  "flow": {
     "triggers": [
       {
         "title": {
