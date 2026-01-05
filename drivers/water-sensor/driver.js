@@ -28,8 +28,14 @@ class WaterSensorDriver extends Homey.Driver {
         const deviceType = (device.type || device.deviceType || '').toUpperCase();
 
         if (deviceType.includes('SWS') || deviceType.includes('WATER') || deviceType.includes('LEAK')) {
+          // FIXED: Naming convention [Station Name] [Device Name]
+          let name = device.name || `XSense ${deviceType}`;
+          if (device.stationName && !name.startsWith(device.stationName)) {
+            name = `${device.stationName} ${name}`;
+          }
+
           devices.push({
-            name: device.name || `XSense ${deviceType}`,
+            name: name,
             data: {
               id: device.id,
               stationId: device.stationId,

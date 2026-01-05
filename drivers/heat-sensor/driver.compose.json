@@ -1,0 +1,100 @@
+{
+  "name": {
+    "en": "Heat Detector",
+    "de": "Hitzemelder"
+  },
+  "class": "sensor",
+  "capabilities": [
+    "alarm_heat",
+    "measure_temperature",
+    "alarm_battery",
+    "measure_battery"
+  ],
+  "energy": {
+    "batteries": [
+      "CR123A"
+    ]
+  },
+  "images": {
+    "large": "assets/images/large.png",
+    "small": "assets/images/small.png"
+  },
+  "platforms": [
+    "local"
+  ],
+  "connectivity": [
+    "cloud"
+  ],
+  "pair": [
+    {
+      "id": "login_credentials",
+      "template": "login_credentials",
+      "options": {
+        "title": {
+          "en": "Login to XSense",
+          "de": "Bei XSense anmelden"
+        },
+        "usernameLabel": {
+          "en": "Email",
+          "de": "E-Mail"
+        },
+        "usernamePlaceholder": {
+          "en": "email@example.com",
+          "de": "email@beispiel.de"
+        },
+        "passwordLabel": {
+          "en": "Password",
+          "de": "Passwort"
+        },
+        "passwordPlaceholder": {
+          "en": "Password",
+          "de": "Passwort"
+        }
+      }
+    },
+    {
+      "id": "list_devices",
+      "template": "list_devices",
+      "navigation": {
+        "prev": "login_credentials",
+        "next": "add_devices"
+      }
+    },
+    {
+      "id": "add_devices",
+      "template": "add_devices",
+      "navigation": {
+        "prev": "list_devices"
+      }
+    }
+  ],
+  "settings": [
+    {
+      "type": "group",
+      "label": {
+        "en": "Device Information",
+        "de": "Geräteinformationen"
+      },
+      "children": [
+        {
+          "id": "device_id",
+          "type": "label",
+          "label": {
+            "en": "Device ID",
+            "de": "Geräte-ID"
+          },
+          "value": ""
+        },
+        {
+          "id": "software_version",
+          "type": "label",
+          "label": {
+            "en": "Software Version",
+            "de": "Softwareversion"
+          },
+          "value": ""
+        }
+      ]
+    }
+  ]
+}

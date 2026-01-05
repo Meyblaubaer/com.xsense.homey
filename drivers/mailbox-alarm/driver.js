@@ -2,12 +2,12 @@
 
 const Homey = require('homey');
 
-class SmokeDetectorDriver extends Homey.Driver {
+class MailboxAlarmDriver extends Homey.Driver {
   /**
    * onInit is called when the driver is initialized.
    */
   async onInit() {
-    this.log('SmokeDetectorDriver has been initialized');
+    this.log('MailboxAlarmDriver has been initialized');
   }
 
   /**
@@ -37,34 +37,39 @@ class SmokeDetectorDriver extends Homey.Driver {
 
       // Process devices
       for (const device of data.devices) {
-        // Only add smoke detectors and CO detectors
-        const deviceType = device.deviceType || device.type || '';
-        this.log(`Processing device: ${device.deviceName}, type: ${deviceType}, id: ${device.id}`);
+        // Filter for Mailbox Alarms (SMA11 etc)
+        const deviceType = (device.deviceType || device.type || '').toUpperCase();
 
-        // FIXED: Naming convention [Station Name] [Device Name]
-        let name = device.deviceName || device.name || `XSense ${deviceType}`;
-        if (device.stationName && !name.startsWith(device.stationName)) {
-          name = `${device.stationName} ${name}`;
-        }
+        // Simple filter: include if type has "MAIL" or "SMA"
+        if (deviceType.includes('MAIL') || deviceType.includes('SMA')) {
 
-        const deviceEntry = {
-          name: name,
-          data: {
-            id: device.id,
-            stationId: device.stationId,
-            houseId: device.houseId
-          },
-          store: {
-            email: username,
-            password: password,
-            stationId: device.stationId,
-            houseId: device.houseId,
-            deviceType: deviceType
+          this.log(`Processing device: ${device.deviceName}, type: ${deviceType}, id: ${device.id}`);
+
+          // FIXED: Naming convention [Station Name] [Device Name]
+          let name = device.deviceName || device.name || `XSense ${deviceType}`;
+          if (device.stationName && !name.startsWith(device.stationName)) {
+            name = `${device.stationName} ${name}`;
           }
-        };
 
-        this.log(`Device entry created:`, JSON.stringify(deviceEntry, null, 2));
-        devices.push(deviceEntry);
+          const deviceEntry = {
+            name: name,
+            data: {
+              id: device.id,
+              stationId: device.stationId,
+              houseId: device.houseId
+            },
+            store: {
+              email: username,
+              password: password,
+              stationId: device.stationId,
+              houseId: device.houseId,
+              deviceType: deviceType
+            }
+          };
+
+          this.log(`Device entry created:`, JSON.stringify(deviceEntry, null, 2));
+          devices.push(deviceEntry);
+        }
       }
 
       this.log(`=== Returning ${devices.length} devices ===`);
@@ -81,7 +86,7 @@ class SmokeDetectorDriver extends Homey.Driver {
    * Determine device capabilities based on device type and available data
    */
   _getCapabilities(device) {
-    const capabilities = ['alarm_smoke'];
+    const capabilities = ['alarm_contact'];
 
     // Battery capabilities
     if (device.batInfo !== undefined || device.batteryLevel !== undefined) {
@@ -91,21 +96,6 @@ class SmokeDetectorDriver extends Homey.Driver {
       if (device.batInfo !== undefined) {
         capabilities.push('alarm_battery');
       }
-    }
-
-    // Temperature
-    if (device.temperature !== undefined || device.temp !== undefined) {
-      capabilities.push('measure_temperature');
-    }
-
-    // Humidity
-    if (device.humidity !== undefined || device.humi !== undefined) {
-      capabilities.push('measure_humidity');
-    }
-
-    // CO detection
-    if (device.coValue !== undefined || device.co !== undefined) {
-      capabilities.push('alarm_co');
     }
 
     return capabilities;
@@ -204,4 +194,4 @@ class SmokeDetectorDriver extends Homey.Driver {
   }
 }
 
-module.exports = SmokeDetectorDriver;
+module.exports = MailboxAlarmDriver;
