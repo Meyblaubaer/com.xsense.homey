@@ -15,8 +15,8 @@
     ]
   },
   "images": {
-    "large": "assets/images/large.png",
-    "small": "assets/images/small.png"
+    "large": "drivers/mailbox-alarm/assets/images/large.png",
+    "small": "drivers/mailbox-alarm/assets/images/small.png"
   },
   "platforms": [
     "local"
