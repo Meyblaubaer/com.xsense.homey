@@ -1,0 +1,96 @@
+{
+  "name": {
+    "en": "Water Leak Detector",
+    "de": "Wasserleck-Detektor"
+  },
+  "class": "sensor",
+  "images": {
+    "large": "drivers/water-sensor/assets/images/large.png",
+    "small": "drivers/water-sensor/assets/images/small.png"
+  },
+  "capabilities": [
+    "alarm_water",
+    "measure_battery",
+    "alarm_battery"
+  ],
+  "energy": {
+    "batteries": [
+      "AAA"
+    ]
+  },
+  "platforms": [
+    "local"
+  ],
+  "connectivity": [
+    "cloud"
+  ],
+  "pair": [
+    {
+      "id": "login_credentials",
+      "template": "login_credentials",
+      "options": {
+        "title": {
+          "en": "Login to XSense",
+          "de": "Bei XSense anmelden"
+        },
+        "usernameLabel": {
+          "en": "Email",
+          "de": "E-Mail"
+        },
+        "usernamePlaceholder": {
+          "en": "email@example.com",
+          "de": "email@beispiel.de"
+        },
+        "passwordLabel": {
+          "en": "Password",
+          "de": "Passwort"
+        },
+        "passwordPlaceholder": {
+          "en": "Password",
+          "de": "Passwort"
+        }
+      }
+    },
+    {
+      "id": "list_devices",
+      "template": "list_devices",
+      "navigation": {
+        "prev": "login_credentials",
+        "next": "add_devices"
+      }
+    },
+    {
+      "id": "add_devices",
+      "template": "add_devices"
+    }
+  ],
+  "settings": [
+    {
+      "type": "group",
+      "label": {
+        "en": "Device Information",
+        "de": "Geräteinformationen"
+      },
+      "children": [
+        {
+          "id": "device_id",
+          "type": "label",
+          "label": {
+            "en": "Device ID",
+            "de": "Geräte-ID"
+          },
+          "value": ""
+        },
+        {
+          "id": "device_type",
+          "type": "label",
+          "label": {
+            "en": "Device Type",
+            "de": "Gerätetyp"
+          },
+          "value": ""
+        }
+      ]
+    }
+  ]
+}

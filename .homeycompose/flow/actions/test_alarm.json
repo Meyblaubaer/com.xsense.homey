@@ -1,0 +1,13 @@
+{
+  "title": {
+    "en": "Test alarm",
+    "de": "Alarm testen"
+  },
+  "args": [
+    {
+      "type": "device",
+      "name": "device",
+      "filter": "driver_id=smoke-detector"
+    }
+  ]
+}

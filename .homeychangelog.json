@@ -1,0 +1,11 @@
+{
+  "1.0.0": {
+    "en": "First Publish of the XSense Homey Integration. Smoke Detectors working."
+  },
+  "1.0.1": {
+    "en": "Changes after first Review"
+  },
+  "1.0.2": {
+    "en": "Some Fixes in Adding devices and Add Github Repo and Bug Reports"
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "id": "com.xsense.svenm",
+  "version": "1.0.2",
+  "compatibility": ">=5.0.0",
+  "sdk": 3,
+  "name": {
+    "en": "X-Sense",
+    "de": "X-Sense"
+  },
+  "description": {
+    "en": "Ultimate home safety with X-Sense smart devices.",
+    "de": "Ultimative Sicherheit für dein Zuhause mit X-Sense."
+  },
+  "category": [
+    "security"
+  ],
+  "brandColor": "#FF6B35",
+  "images": {
+    "large": "assets/images/large.png",
+    "small": "assets/images/small.png"
+  },
+  "author": {
+    "name": "Sven-Christian Meyhoefer",
+    "email": ""
+  },
+  "bugs": {
+    "url": "https://github.com/Meyblaubaer/com.xsense.svenm/issues"
+  },
+  "source": "https://github.com/Meyblaubaer/com.xsense.svenm"
+}

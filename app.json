@@ -1,0 +1,413 @@
+{
+  "_comment": "This file is generated. Please edit .homeycompose/app.json instead.",
+  "id": "com.xsense.svenm",
+  "version": "1.0.2",
+  "compatibility": ">=5.0.0",
+  "sdk": 3,
+  "name": {
+    "en": "X-Sense",
+    "de": "X-Sense"
+  },
+  "description": {
+    "en": "Smart home security the way it should be.",
+    "de": "Intelligente Sicherheit für dein Zuhause, wie sie sein sollte."
+  },
+  "category": [
+    "security"
+  ],
+  "brandColor": "#FF6B35",
+  "images": {
+    "large": "assets/images/large.png",
+    "small": "assets/images/small.png"
+  },
+  "author": {
+    "name": "Sven-Christian Meyhoefer",
+    "email": ""
+  },
+  "bugs": {
+    "url": "https://github.com/Meyblaubaer/com.xsense.svenm/issues"
+  },
+  "source": "https://github.com/Meyblaubaer/com.xsense.svenm""flow": {
+    "triggers": [
+      {
+        "title": {
+          "en": "CO detected",
+          "de": "CO erkannt"
+        },
+        "tokens": [
+          {
+            "name": "device",
+            "type": "string",
+            "title": {
+              "en": "Device",
+              "de": "Gerät"
+            }
+          },
+          {
+            "name": "co_level",
+            "type": "number",
+            "title": {
+              "en": "CO Level (ppm)",
+              "de": "CO-Level (ppm)"
+            }
+          }
+        ],
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=smoke-detector"
+          }
+        ],
+        "id": "co_detected"
+      },
+      {
+        "title": {
+          "en": "Device muted",
+          "de": "Gerät stummgeschaltet"
+        },
+        "tokens": [
+          {
+            "name": "device",
+            "type": "string",
+            "title": {
+              "en": "Device",
+              "de": "Gerät"
+            }
+          }
+        ],
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=smoke-detector"
+          }
+        ],
+        "id": "device_muted"
+      }
+    ],
+    "actions": [
+      {
+        "title": {
+          "en": "Test alarm",
+          "de": "Alarm testen"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=smoke-detector"
+          }
+        ],
+        "id": "test_alarm"
+      }
+    ]
+  },
+  "drivers": [
+    {
+      "name": {
+        "en": "Smoke Detector",
+        "de": "Rauchmelder"
+      },
+      "class": "sensor",
+      "images": {
+        "large": "drivers/smoke-detector/assets/images/large.png",
+        "small": "drivers/smoke-detector/assets/images/small.png"
+      },
+      "capabilities": [
+        "alarm_smoke",
+        "alarm_battery",
+        "measure_battery",
+        "measure_temperature",
+        "measure_humidity",
+        "alarm_co"
+      ],
+      "energy": {
+        "batteries": [
+          "CR123A"
+        ]
+      },
+      "platforms": [
+        "local"
+      ],
+      "connectivity": [
+        "cloud"
+      ],
+      "pair": [
+        {
+          "id": "login_credentials",
+          "template": "login_credentials",
+          "options": {
+            "title": {
+              "en": "Login to XSense",
+              "de": "Bei XSense anmelden"
+            },
+            "usernameLabel": {
+              "en": "Email",
+              "de": "E-Mail"
+            },
+            "usernamePlaceholder": {
+              "en": "email@example.com",
+              "de": "email@beispiel.de"
+            },
+            "passwordLabel": {
+              "en": "Password",
+              "de": "Passwort"
+            },
+            "passwordPlaceholder": {
+              "en": "Password",
+              "de": "Passwort"
+            }
+          }
+        },
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "prev": "login_credentials",
+            "next": "add_devices"
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices",
+          "navigation": {
+            "prev": "list_devices"
+          }
+        }
+      ],
+      "settings": [
+        {
+          "type": "group",
+          "label": {
+            "en": "Device Information",
+            "de": "Geräteinformationen"
+          },
+          "children": [
+            {
+              "id": "device_id",
+              "type": "label",
+              "label": {
+                "en": "Device ID",
+                "de": "Geräte-ID"
+              },
+              "value": ""
+            },
+            {
+              "id": "software_version",
+              "type": "label",
+              "label": {
+                "en": "Software Version",
+                "de": "Softwareversion"
+              },
+              "value": ""
+            }
+          ]
+        }
+      ],
+      "id": "smoke-detector"
+    },
+    {
+      "name": {
+        "en": "Temperature & Humidity Sensor",
+        "de": "Temperatur- & Luftfeuchtigkeitssensor"
+      },
+      "class": "sensor",
+      "images": {
+        "large": "drivers/temperature-sensor/assets/images/large.png",
+        "small": "drivers/temperature-sensor/assets/images/small.png"
+      },
+      "capabilities": [
+        "measure_temperature",
+        "measure_humidity",
+        "measure_battery",
+        "alarm_battery"
+      ],
+      "energy": {
+        "batteries": [
+          "AAA"
+        ]
+      },
+      "platforms": [
+        "local"
+      ],
+      "connectivity": [
+        "cloud"
+      ],
+      "pair": [
+        {
+          "id": "login_credentials",
+          "template": "login_credentials",
+          "options": {
+            "title": {
+              "en": "Login to XSense",
+              "de": "Bei XSense anmelden"
+            },
+            "usernameLabel": {
+              "en": "Email",
+              "de": "E-Mail"
+            },
+            "usernamePlaceholder": {
+              "en": "email@example.com",
+              "de": "email@beispiel.de"
+            },
+            "passwordLabel": {
+              "en": "Password",
+              "de": "Passwort"
+            },
+            "passwordPlaceholder": {
+              "en": "Password",
+              "de": "Passwort"
+            }
+          }
+        },
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "prev": "login_credentials"
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ],
+      "settings": [
+        {
+          "type": "group",
+          "label": {
+            "en": "Device Information",
+            "de": "Geräteinformationen"
+          },
+          "children": [
+            {
+              "id": "device_id",
+              "type": "label",
+              "label": {
+                "en": "Device ID",
+                "de": "Geräte-ID"
+              },
+              "value": ""
+            },
+            {
+              "id": "device_type",
+              "type": "label",
+              "label": {
+                "en": "Device Type",
+                "de": "Gerätetyp"
+              },
+              "value": ""
+            },
+            {
+              "id": "wifi_ssid",
+              "type": "label",
+              "label": {
+                "en": "WiFi Network",
+                "de": "WLAN-Netzwerk"
+              },
+              "value": ""
+            }
+          ]
+        }
+      ],
+      "id": "temperature-sensor"
+    },
+    {
+      "name": {
+        "en": "Water Leak Detector",
+        "de": "Wasserleck-Detektor"
+      },
+      "class": "sensor",
+      "images": {
+        "large": "drivers/water-sensor/assets/images/large.png",
+        "small": "drivers/water-sensor/assets/images/small.png"
+      },
+      "capabilities": [
+        "alarm_water",
+        "measure_battery",
+        "alarm_battery"
+      ],
+      "energy": {
+        "batteries": [
+          "AAA"
+        ]
+      },
+      "platforms": [
+        "local"
+      ],
+      "connectivity": [
+        "cloud"
+      ],
+      "pair": [
+        {
+          "id": "login_credentials",
+          "template": "login_credentials",
+          "options": {
+            "title": {
+              "en": "Login to XSense",
+              "de": "Bei XSense anmelden"
+            },
+            "usernameLabel": {
+              "en": "Email",
+              "de": "E-Mail"
+            },
+            "usernamePlaceholder": {
+              "en": "email@example.com",
+              "de": "email@beispiel.de"
+            },
+            "passwordLabel": {
+              "en": "Password",
+              "de": "Passwort"
+            },
+            "passwordPlaceholder": {
+              "en": "Password",
+              "de": "Passwort"
+            }
+          }
+        },
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "prev": "login_credentials"
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ],
+      "settings": [
+        {
+          "type": "group",
+          "label": {
+            "en": "Device Information",
+            "de": "Geräteinformationen"
+          },
+          "children": [
+            {
+              "id": "device_id",
+              "type": "label",
+              "label": {
+                "en": "Device ID",
+                "de": "Geräte-ID"
+              },
+              "value": ""
+            },
+            {
+              "id": "device_type",
+              "type": "label",
+              "label": {
+                "en": "Device Type",
+                "de": "Gerätetyp"
+              },
+              "value": ""
+            }
+          ]
+        }
+      ],
+      "id": "water-sensor"
+    }
+  ]
+}

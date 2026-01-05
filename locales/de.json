@@ -1,0 +1,14 @@
+{
+  "pair": {
+    "error": {
+      "login_failed": "Anmeldung fehlgeschlagen. Bitte überprüfen Sie Ihre Zugangsdaten.",
+      "list_failed": "Geräte konnten nicht abgerufen werden. Bitte versuchen Sie es erneut."
+    }
+  },
+  "error": {
+    "initialization_failed": "Geräteinitialisierung fehlgeschlagen",
+    "device_not_found": "Gerät nicht gefunden",
+    "update_failed": "Aktualisierung der Gerätedaten fehlgeschlagen",
+    "test_alarm_failed": "Alarmtest fehlgeschlagen"
+  }
+}

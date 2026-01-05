@@ -1,0 +1,32 @@
+# System
+.DS_Store
+.git
+.gitignore
+.homeyignore
+
+# Dependencies
+node_modules/
+
+# Logs and Debug
+*.log
+*.pcap
+*.txt
+signer-debug.json
+xsense_sslkeylog*.log
+xsense_mqtt*.pcap
+
+# Build Artifacts
+.homeybuild/
+.homeycompose/
+
+# Documentation & Backups
+Github.md
+README.md.bak
+README.md.bak2
+Fortschritt.md
+TODO.md
+INSTALLATION.md
+
+# Test Scripts
+test-api.js
+test-signer.js
