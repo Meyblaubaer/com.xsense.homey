@@ -14,6 +14,13 @@
   ],
   "author": "Sven-Christian Meyhoefer",
   "license": "GPL-3.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Meyblaubaer/com.xsense.svenm.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Meyblaubaer/com.xsense.svenm/issues"
+  },
   "dependencies": {
     "@aws-sdk/client-cognito-identity-provider": "^3.698.0",
     "aws4": "^1.13.2",
