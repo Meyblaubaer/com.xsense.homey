@@ -16,5 +16,8 @@
   },
   "1.0.5": {
     "en": "Bug Fixes for Crashes, SC07-WX and STH51."
+  },
+  "1.0.6": {
+    "en": "Added SC07-WX Logic from API-Responses"
   }
 }
