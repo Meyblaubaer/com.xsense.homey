@@ -68,16 +68,26 @@ class XSenseApp extends Homey.App {
     })();
 
     this.apiClients.set(key, initPromise);
-    return await initPromise;
+    return initPromise;
   }
 
   /**
    * Poll all devices for updates
    */
   async _pollDeviceUpdates() {
-    for (const [key, client] of this.apiClients) {
+    // keys are "email:password"
+    for (const key of this.apiClients.keys()) {
       try {
-        await client.getAllDevices();
+        // Splitting key is not safe if password contains colon, but we can reconstruct params or change storage.
+        // Better: iterate keys and assume getAPIClient returns the ready instance/promise
+        // Actually, let's just use the map values, but we need to await them.
+
+        const clientOrPromise = this.apiClients.get(key);
+        const client = await clientOrPromise;
+
+        if (client && typeof client.getAllDevices === 'function') {
+          await client.getAllDevices();
+        }
       } catch (error) {
         this.error('Error polling device updates:', error);
       }

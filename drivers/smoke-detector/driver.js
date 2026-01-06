@@ -44,6 +44,8 @@ class SmokeDetectorDriver extends Homey.Driver {
         // FIXED: Naming convention [Station Name] [Device Name]
         let name = device.deviceName || device.name || `XSense ${deviceType}`;
         if (device.stationName && !name.startsWith(device.stationName)) {
+          // Basic check is not enough if stationName is just "Home" and device is "Home Sensor"
+          // but it's better than nothing.
           name = `${device.stationName} ${name}`;
         }
 
