@@ -62,6 +62,7 @@ class TemperatureSensorDevice extends Homey.Device {
   }
 
   async _handleDeviceUpdate(deviceData) {
+    this.log(`_handleDeviceUpdate: ${JSON.stringify(deviceData)}`);
     try {
       // Update temperature
       if (this.hasCapability('measure_temperature')) {
