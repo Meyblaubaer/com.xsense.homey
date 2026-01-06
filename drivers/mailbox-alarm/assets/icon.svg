@@ -1,8 +1,6 @@
-<svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-  <rect x="25" y="20" width="50" height="60" rx="5" fill="#333333" />
-  <rect x="30" y="25" width="40" height="50" rx="3" fill="#444444" />
-  <line x1="25" y1="20" x2="10" y2="5" stroke="#333333" stroke-width="2" />
-  <circle cx="10" cy="5" r="2" fill="#333333" />
-  <path d="M35 45 L50 55 L65 45" stroke="#ffffff" stroke-width="2" fill="none"/>
-  <rect x="35" y="45" width="30" height="20" stroke="#ffffff" stroke-width="2" fill="none"/>
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000">
+  <!-- Envelope Outline -->
+  <rect x="100" y="250" width="800" height="500" rx="50" ry="50" fill="none" stroke="black" stroke-width="50"/>
+  <!-- Envelope Flap -->
+  <path d="M100,250 L500,550 L900,250" fill="none" stroke="black" stroke-width="50" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>

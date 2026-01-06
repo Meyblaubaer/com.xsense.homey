@@ -1,8 +1,8 @@
-<svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-  <circle cx="50" cy="50" r="45" fill="#ffffff" stroke="#333333" stroke-width="2"/>
-  <circle cx="50" cy="50" r="35" fill="none" stroke="#ddd" stroke-width="2"/>
-  <path d="M50 25 L50 45" stroke="#ff6b35" stroke-width="3" stroke-linecap="round"/>
-  <path d="M50 65 L50 75" stroke="#ff6b35" stroke-width="3" stroke-linecap="round"/>
-  <path d="M40 35 L40 55" stroke="#ff6b35" stroke-width="3" stroke-linecap="round"/>
-  <path d="M60 35 L60 55" stroke="#ff6b35" stroke-width="3" stroke-linecap="round"/>
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000">
+  <!-- Outer Circle -->
+  <circle cx="500" cy="500" r="450" fill="none" stroke="black" stroke-width="50"/>
+  <!-- Heat Waves (3 vertical wavy lines) -->
+  <path d="M350,750 Q450,650 350,550 Q250,450 350,350" fill="none" stroke="black" stroke-width="50" stroke-linecap="round"/>
+  <path d="M500,700 Q600,600 500,500 Q400,400 500,300" fill="none" stroke="black" stroke-width="50" stroke-linecap="round"/>
+  <path d="M650,750 Q750,650 650,550 Q550,450 650,350" fill="none" stroke="black" stroke-width="50" stroke-linecap="round"/>
 </svg>
