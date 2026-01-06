@@ -30,3 +30,4 @@ INSTALLATION.md
 # Test Scripts
 test-api.js
 test-signer.js
+reported_bugs.md

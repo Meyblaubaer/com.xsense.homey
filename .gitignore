@@ -37,3 +37,4 @@ Thumbs.db
 # Other
 *.txt
 !README.txt
+reported_bugs.md
