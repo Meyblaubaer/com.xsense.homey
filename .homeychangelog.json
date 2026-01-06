@@ -13,5 +13,8 @@
   },
   "1.0.4": {
     "en": "Updated Integration after User-Feedback and added GitHub Repository Informations and Bug-Tracking."
+  },
+  "1.0.5": {
+    "en": "Bug Fixes for Crashes, SC07-WX and STH51."
   }
 }
