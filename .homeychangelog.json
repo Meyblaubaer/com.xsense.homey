@@ -31,5 +31,8 @@
   },
   "1.0.10": {
     "en": "Seperating CO-Detector from Smoke-Detector, Adding CO-Pictograms, Filtering Device-Types"
+  },
+  "1.0.11": {
+    "en": "Fixing CO-Detector Driver-Icon"
   }
 }
