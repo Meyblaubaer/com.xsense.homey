@@ -143,7 +143,13 @@ Die App nutzt jetzt **vollständige AWS Cognito SRP Authentication** für die Ve
 - FIX: Batterie-Status für XS0B-MR Rauchmelder korrigiert
 - FIX: App-Absturz in der Polling-Schleife behoben
 
-### Version 1.0.0
+### Version 1.0.9
+- NEU: Separater Treiber für **CO-Melder** (Kohlenmonoxid) hinzugefügt
+- NEU: Geräte-Filterung für alle Treiber (Rauch, Wasser, Temp, Heat, Mailbox) - zeigt nur noch relevante Geräte an
+- FIX: Geräte-Namen bereinigt (Redundantes "Basisstation" Präfix entfernt)
+- FIX: CO-Melder (XC) aus Rauchmelder-Treiber entfernt (jetzt im eigenen Treiber)
+
+### Version 1.0.8
 - Erste Veröffentlichung
 - Unterstützung für Rauchmelder
 - MQTT Echtzeit-Updates

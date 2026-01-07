@@ -28,11 +28,8 @@ class TemperatureSensorDriver extends Homey.Driver {
         const deviceType = (device.type || device.deviceType || '').toUpperCase();
 
         if (deviceType.includes('STH') || deviceType.includes('TEMP') || deviceType.includes('HYGROMETER')) {
-          // FIXED: Naming convention [Station Name] [Device Name]
+          // FIXED: Use the name from API directly (which includes our "Type SN" fix from XSenseAPI)
           let name = device.name || `XSense ${deviceType}`;
-          if (device.stationName && !name.startsWith(device.stationName)) {
-            name = `${device.stationName} ${name}`;
-          }
 
           devices.push({
             name: name,

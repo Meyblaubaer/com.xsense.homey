@@ -157,12 +157,16 @@ class MailboxAlarmDriver extends Homey.Driver {
 
         // Process devices
         for (const device of data.devices) {
-          const deviceType = device.deviceType || device.type || '';
-          // FIXED: Naming convention [Station Name] [Device Name]
-          let name = device.deviceName || device.name || `XSense ${deviceType}`;
-          if (device.stationName && !name.startsWith(device.stationName)) {
-            name = `${device.stationName} ${name}`;
+          const deviceType = (device.deviceType || device.type || '').toUpperCase();
+
+          // FILTER: Only include Mailbox Alarms (SMA)
+          if (!deviceType.includes('SMA') && !deviceType.includes('MAIL')) {
+            this.log(`Skipping device ${device.deviceName} (Type: ${deviceType}) - Not a mailbox alarm`);
+            continue;
           }
+
+          // FIXED: Use the name from API directly (which includes our "Type SN" fix from XSenseAPI)
+          let name = device.deviceName || device.name || `XSense ${deviceType}`;
 
           const deviceEntry = {
             name: name,

@@ -2,12 +2,12 @@
 
 const Homey = require('homey');
 
-class HeatDetectorDriver extends Homey.Driver {
+class CoDetectorDriver extends Homey.Driver {
   /**
    * onInit is called when the driver is initialized.
    */
   async onInit() {
-    this.log('HeatDetectorDriver has been initialized');
+    this.log('CoDetectorDriver has been initialized');
   }
 
   /**
@@ -37,39 +37,41 @@ class HeatDetectorDriver extends Homey.Driver {
 
       // Process devices
       for (const device of data.devices) {
-        // Filter for Heat Detectors (XH02-M etc)
+        // Only add CO detectors
         const deviceType = (device.deviceType || device.type || '').toUpperCase();
+        this.log(`Processing device: ${device.deviceName}, type: ${deviceType}, id: ${device.id}`);
 
-        // Simple filter: include if type has "HEAT" or if it is a specific known model like XH02
-        if (deviceType.includes('HEAT') || deviceType.includes('XH')) {
-
-          this.log(`Processing device: ${device.deviceName}, type: ${deviceType}, id: ${device.id}`);
-
-          // FIXED: Naming convention [Station Name] [Device Name]
-          let name = device.deviceName || device.name || `XSense ${deviceType}`;
-          if (device.stationName && !name.startsWith(device.stationName)) {
-            name = `${device.stationName} ${name}`;
+        // FILTER: Only include CO Detectors (XC)
+        if (!deviceType.includes('XC') && !deviceType.includes('CO')) {
+          // Ensure we don't pick up others accidentally
+          if (!deviceType.startsWith('XC')) {
+            this.log(`Skipping device ${device.deviceName} (Type: ${deviceType}) - Not a dedicated CO detector`);
+            continue;
           }
-
-          const deviceEntry = {
-            name: name,
-            data: {
-              id: device.id,
-              stationId: device.stationId,
-              houseId: device.houseId
-            },
-            store: {
-              email: username,
-              password: password,
-              stationId: device.stationId,
-              houseId: device.houseId,
-              deviceType: deviceType
-            }
-          };
-
-          this.log(`Device entry created:`, JSON.stringify(deviceEntry, null, 2));
-          devices.push(deviceEntry);
         }
+
+        // FIXED: Naming convention [Station Name] [Device Name]
+        let name = device.deviceName || device.name || `XSense ${deviceType}`;
+        // Note: Station prefix logic removed as per user preference in other drivers
+
+        const deviceEntry = {
+          name: name,
+          data: {
+            id: device.id,
+            stationId: device.stationId,
+            houseId: device.houseId
+          },
+          store: {
+            email: username,
+            password: password,
+            stationId: device.stationId,
+            houseId: device.houseId,
+            deviceType: deviceType
+          }
+        };
+
+        this.log(`Device entry created:`, JSON.stringify(deviceEntry, null, 2));
+        devices.push(deviceEntry);
       }
 
       this.log(`=== Returning ${devices.length} devices ===`);
@@ -86,7 +88,7 @@ class HeatDetectorDriver extends Homey.Driver {
    * Determine device capabilities based on device type and available data
    */
   _getCapabilities(device) {
-    const capabilities = ['alarm_heat'];
+    const capabilities = ['alarm_co'];
 
     // Battery capabilities
     if (device.batInfo !== undefined || device.batteryLevel !== undefined) {
@@ -98,10 +100,8 @@ class HeatDetectorDriver extends Homey.Driver {
       }
     }
 
-    // Temperature
-    if (device.temperature !== undefined || device.temp !== undefined) {
-      capabilities.push('measure_temperature');
-    }
+    // Measure CO
+    capabilities.push('measure_co');
 
     return capabilities;
   }
@@ -164,13 +164,15 @@ class HeatDetectorDriver extends Homey.Driver {
         for (const device of data.devices) {
           const deviceType = (device.deviceType || device.type || '').toUpperCase();
 
-          // FILTER: Only include Heat Detectors (XH)
-          if (!deviceType.includes('XH') && !deviceType.includes('HEAT')) {
-            this.log(`Skipping device ${device.deviceName} (Type: ${deviceType}) - Not a heat detector`);
-            continue;
+          // FILTER: Only include CO Detectors (XC)
+          if (!deviceType.includes('XC') && !deviceType.includes('CO')) {
+            if (!deviceType.startsWith('XC')) {
+              this.log(`Skipping device ${device.deviceName} (Type: ${deviceType}) - Not a dedicated CO detector`);
+              continue;
+            }
           }
 
-          // FIXED: Use the name from API directly (which includes our "Type SN" fix from XSenseAPI)
+          // FIXED: Naming convention
           let name = device.deviceName || device.name || `XSense ${deviceType}`;
 
           const deviceEntry = {
@@ -203,4 +205,4 @@ class HeatDetectorDriver extends Homey.Driver {
   }
 }
 
-module.exports = HeatDetectorDriver;
+module.exports = CoDetectorDriver;
