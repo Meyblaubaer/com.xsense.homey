@@ -44,5 +44,8 @@
   },
   "1.0.14": {
     "en": "Bugfixes with Temp.-readings and Code-Optimization"
+  },
+  "1.0.15": {
+    "en": "SC07-WX Improvements and Bugfixes"
   }
 }
