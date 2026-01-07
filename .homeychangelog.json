@@ -25,5 +25,8 @@
   },
   "1.0.8": {
     "en": "Bugfixes"
+  },
+  "1.0.9": {
+    "en": "Bugfix in driver.js and filtering \"Basisstation\" on every device"
   }
 }
