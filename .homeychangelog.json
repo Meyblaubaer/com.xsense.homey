@@ -28,5 +28,8 @@
   },
   "1.0.9": {
     "en": "Bugfix in driver.js and filtering \"Basisstation\" on every device"
+  },
+  "1.0.10": {
+    "en": "Seperating CO-Detector from Smoke-Detector, Adding CO-Pictograms, Filtering Device-Types"
   }
 }
