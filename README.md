@@ -15,11 +15,11 @@ Diese Homey App ermöglicht die Integration von XSense Rauchmeldern und anderen 
 ### Rauchmelder & CO-Melder
 - XSense Rauchmelder (XS01-WX, XS03-WX, XS01-M, XS0B-MR, etc.)
 - XSense CO-Melder (XC04-WX, XC01-M)
-- XSense Kombi-Melder Rauch + CO (SC07-WX, XP0A-MR)
+- XSense Kombi-Melder Rauch + CO (SC07-WX, XP0A-MR) - **Volle Unterstützung inkl. Temperatur & CO-Werten!**
 - XSense Hitzemelder (XH02-M)
 
 ### WLAN-Temperatur- & Luftfeuchtigkeitssensoren
-- **STH51** - WiFi Thermometer Hygrometer (Swiss Sensor, ±0.2°C Genauigkeit)
+- **STH51** - WiFi Thermometer Hygrometer (Swiss Sensor, ±0.2°C Genauigkeit) - **Verbesserte Unterstützung**
 - **STH54** - WiFi Thermometer Hygrometer (3er-Pack Variante)
 - **STH0A** - WiFi Thermometer Hygrometer mit LCD (inkl. VPD & Taupunkt)
 
@@ -44,6 +44,7 @@ Die App unterstützt folgende Capabilities:
 - `measure_battery` - Batteriestatus in %
 - `measure_temperature` - Temperatur in °C
 - `measure_humidity` - Luftfeuchtigkeit in %
+- `measure_co` - CO-Wert in ppm (für SC07-WX und andere CO-Melder)
 
 ## Flow Cards
 
@@ -60,6 +61,7 @@ Die App unterstützt folgende Capabilities:
 ### Conditions (Und...)
 
 - **Rauch ist erkannt/nicht erkannt** - Prüfe, ob aktuell Rauch erkannt wird
+- **CO ist erkannt/nicht erkannt** - Prüfe, ob aktuell CO erkannt wird
 
 ### Actions (Dann...)
 
@@ -102,15 +104,16 @@ Die App nutzt jetzt **vollständige AWS Cognito SRP Authentication** für die Ve
 - ✅ Komplette App-Struktur (Driver, Flow Cards, UI)
 - ✅ Alle drei Gerätetypen implementiert (Rauchmelder, Temperatur, Wasser)
 - ✅ **AWS Cognito Authentication vollständig implementiert**
-- ✅ Thing Shadows API für Geräte-Daten
+- ✅ **Auto-Relogin / Session Recovery** (Keine "Another device is logged in" Fehler mehr)
+- ✅ Thing Shadows API für Geräte-Daten (Verbesserte Parsing-Logik für STH51 & SC07-WX)
 - ⚠️ MQTT Real-time Updates (Basis implementiert)
 
 **Funktionen:**
 - Automatischer Abruf der Cognito Credentials vom XSense Server
 - Sichere SRP-basierte Authentifizierung
 - Unterstützung für Houses, Stations und Devices
+- Intelligente Geräte-Erkennung (auch für "Station-only" Devices wie SC07-WX)
 - Thing Shadows API für aktuellen Gerätestatus
-- Polling-basierte Updates (alle 60 Sekunden)
 
 
 ## Fehlerbehebung
@@ -131,6 +134,14 @@ Die App nutzt jetzt **vollständige AWS Cognito SRP Authentication** für die Ve
 - Starte das Gerät in Homey neu
 
 ## Changelog
+
+### Version 1.0.8
+- NEU: Volle Unterstützung für SC07-WX (CO, Temperatur, Alarm)
+- FIX: STH51 Temperatur & Luftfeuchtigkeit (Parsing für minifizierte Daten)
+- FIX: STH51 Gerätenamen (Auto-Renaming für "Station de base...")
+- FIX: "Another device is logged in" (Fehler 500) durch Auto-Relogin behoben
+- FIX: Batterie-Status für XS0B-MR Rauchmelder korrigiert
+- FIX: App-Absturz in der Polling-Schleife behoben
 
 ### Version 1.0.0
 - Erste Veröffentlichung
