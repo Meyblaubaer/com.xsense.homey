@@ -1,4 +1,22 @@
-# Changelog - XSense Homey App
+# Changelog
+
+## Version 1.0.13
+
+### 🔴 Critical Fixes
+- **Code Quality**: Removed duplicate code to improve stability
+- **MQTT**: Fixed temp/humidity real-time updates for STH51 sensors (Active Refresh implemented)
+- **Shared Accounts**: Fixed stale data issue for Family Share users
+
+### 📝 Documentation
+- Enhanced description to explicitly warn about dedicated account requirement
+- Updated README with Family Share setup instructions
+
+### 🐛 Bug Fixes
+- **SC07-WX**: Fixed missing battery status by merging multiple shadow data sources
+- Temperature sensors now receive real-time updates via MQTT (not just polling)
+- Fixed potential data synchronization delays
+
+ - XSense Homey App
 
 ## Version 1.0.0 - 2024-12-24
 

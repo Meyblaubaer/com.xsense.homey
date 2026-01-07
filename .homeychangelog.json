@@ -1,4 +1,8 @@
 {
+  "1.0.13": {
+    "en": "Critical fixes: Real-time temp updates, active refresh for sensors, SC07-WX battery fix, code cleanup",
+    "de": "Kritische Fixes: Echtzeit-Temp-Updates, aktiver Refresh für Sensoren, SC07-WX Batterie-Fix, Code-Bereinigung"
+  },
   "1.0.0": {
     "en": "First Publish of the XSense Homey Integration. Smoke Detectors working."
   },

@@ -34,13 +34,28 @@ class TemperatureSensorDevice extends Homey.Device {
       await this.updateDevice();
 
       // Poll every 60 seconds (MQTT provides real-time updates too)
-      this.pollInterval = setInterval(() => {
-        this.updateDevice();
-      }, 60000);
+      // Update: Extended interval to 5 minutes as per refresh.md analysis and added Sync Request
+      this.pollInterval = setInterval(async () => {
+        await this._requestTempDataSync();
+        // this.updateDevice(); // Optional, let MQTT push handling do the work or sync request
+      }, 300000); // 5 minutes (as per Android App)
+
+      // Initial Sync Request
+      await this._requestTempDataSync();
 
     } catch (error) {
       this.error('Error initializing device:', error);
       this.setUnavailable(this.homey.__('error.initialization_failed'));
+    }
+  }
+
+  // Wrapper for API call
+  async _requestTempDataSync() {
+    try {
+      // Station ID is needed, devices list is optional/all
+      await this.api.requestTempDataSync(this.deviceData.stationId, [this.deviceData.deviceSn]);
+    } catch (err) {
+      this.error('Failed to request temp data sync:', err);
     }
   }
 

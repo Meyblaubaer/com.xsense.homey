@@ -13,7 +13,10 @@ Features:
 - Temperature and humidity readings
 - Flow triggers for automation
 
-Usage:
+Usage / Nutzung:
+*IMPORTANT: Use a dedicated X-Sense account for Homey (via Family Key sharing) to avoid session conflicts.*
+*WICHTIG: Nutze einen eigenen X-Sense Account für Homey (via Familienfreigabe), um Verbindungsprobleme zu vermeiden.*
+
 1. Install this app.
 2. Add a new device in Homey.
 3. Log in with your X-Sense account credentials.

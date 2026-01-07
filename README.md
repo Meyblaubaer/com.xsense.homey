@@ -38,6 +38,17 @@ Diese Homey App ermöglicht die Integration von XSense Rauchmeldern und anderen 
 3. Melde dich mit deinen XSense-Zugangsdaten an (E-Mail und Passwort)
 4. Wähle die Geräte aus, die du hinzufügen möchtest
 
+## ⚠️ WICHTIG: Erstelle einen eigenen Account für Homey!
+
+X-Sense erlaubt **nur eine aktive Sitzung pro Account**.
+Wenn du denselben Account auf deinem Smartphone und in Homey nutzt, werden sich die Geräte gegenseitig ausloggen ("Another device is logged in").
+Dies führt zu Lücken in den Daten-Updates.
+
+**Lösung:**
+1.  Erstelle einen **zweiten X-Sense Account** (z.B. mit einer anderen E-Mail-Adresse).
+2.  Nutze die "Familienfreigabe" (Family Share) Funktion in der X-Sense App, um dein "Zuhause" mit diesem neuen Account zu teilen.
+3.  Benutze diesen neuen Account **ausschließlich für Homey**.
+
 ## Capabilities
 
 Die App unterstützt folgende Capabilities:
