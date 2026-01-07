@@ -19,5 +19,8 @@
   },
   "1.0.6": {
     "en": "Added SC07-WX Logic from API-Responses"
+  },
+  "1.0.7": {
+    "en": "Bugfixes and improved Shadow-Mapping"
   }
 }
