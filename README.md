@@ -164,6 +164,10 @@ Die App nutzt jetzt **vollständige AWS Cognito SRP Authentication** für die Ve
 - FIX: Geräte-Namen bereinigt (Redundantes "Basisstation" Präfix entfernt)
 - FIX: CO-Melder (XC) aus Rauchmelder-Treiber entfernt (jetzt im eigenen Treiber)
 
+### Version 1.0.16
+- FIX: **Kritischer Absturz behoben** - "getWiFiDeviceShadow is not a function" Fehler gefixt
+- FIX: Verbesserte Unterstützung für SC07-WX WiFi-Geräte
+
 ### Version 1.0.12
 - NEU: Treiber für **Hitzemelder** (Heat Detector, XH02-M) hinzugefügt
 - NEU: Treiber für **Briefkasten-Alarm** (Mailbox Alarm, MA01) hinzugefügt

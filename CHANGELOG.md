@@ -1,5 +1,11 @@
 # Changelog
 
+## Version 1.0.16
+
+### 🐛 Bug Fixes
+- **CRITICAL**: Fixed crash in `getAllDevices` due to missing `getWiFiDeviceShadow` function
+- **Stability**: Improvements for SC07-WX WiFi devices
+
 ## Version 1.0.13
 
 ### 🔴 Critical Fixes
