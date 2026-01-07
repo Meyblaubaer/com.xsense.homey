@@ -1,7 +1,7 @@
 {
   "_comment": "This file is generated. Please edit .homeycompose/app.json instead.",
   "id": "com.xsense.svenm",
-  "version": "1.0.11",
+  "version": "1.0.12",
   "compatibility": ">=5.0.0",
   "sdk": 3,
   "name": {
@@ -437,6 +437,7 @@
       },
       "capabilities": [
         "alarm_smoke",
+        "measure_smoke_status",
         "alarm_battery",
         "measure_battery",
         "measure_temperature",
@@ -459,6 +460,9 @@
         {
           "id": "login_credentials",
           "template": "login_credentials",
+          "navigation": {
+            "next": "list_devices"
+          },
           "options": {
             "title": {
               "en": "Login to XSense",
@@ -733,5 +737,19 @@
       ],
       "id": "water-sensor"
     }
-  ]
+  ],
+  "capabilities": {
+    "measure_smoke_status": {
+      "type": "string",
+      "title": {
+        "en": "Smoke Status",
+        "de": "Rauchstatus"
+      },
+      "getable": true,
+      "setable": false,
+      "uiComponent": "sensor",
+      "icon": "assets/images/measure_smoke_status.svg",
+      "insights": true
+    }
+  }
 }
