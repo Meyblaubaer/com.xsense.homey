@@ -110,6 +110,22 @@ class MailboxAlarmDriver extends Homey.Driver {
     // Store credentials in session object
     let credentials = null;
 
+    // Check for stored credentials
+    const stored = this.homey.app.getStoredCredentials();
+    if (stored.email && stored.password) {
+      this.log('Found stored credentials, attempting auto-login');
+      try {
+        await this.homey.app.getAPIClient(stored.email, stored.password);
+        credentials = {
+          username: stored.email,
+          password: stored.password
+        };
+        await session.showView('list_devices');
+      } catch (error) {
+        this.log('Auto-login failed with stored credentials');
+      }
+    }
+
     // For login_credentials template, we need to handle the 'login' event
     session.setHandler('login', async (data) => {
       try {
@@ -124,6 +140,9 @@ class MailboxAlarmDriver extends Homey.Driver {
           username: username,
           password: password
         };
+
+        // Save for future
+        this.homey.app.setStoredCredentials(username, password);
 
         this.log('Login successful, credentials stored');
         return true;

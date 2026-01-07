@@ -55,6 +55,17 @@ class SmokeDetectorDevice extends Homey.Device {
 
     // Register capability listeners
     this._registerCapabilityListeners();
+
+    // Initialize capabilities directly to ensure they appear in UI
+    if (this.hasCapability('alarm_smoke') && this.getCapabilityValue('alarm_smoke') === null) {
+      this.setCapabilityValue('alarm_smoke', false).catch(this.error);
+    }
+    if (this.hasCapability('alarm_co') && this.getCapabilityValue('alarm_co') === null) {
+      this.setCapabilityValue('alarm_co', false).catch(this.error);
+    }
+    if (this.hasCapability('measure_smoke_status') && this.getCapabilityValue('measure_smoke_status') === null) {
+      this.setCapabilityValue('measure_smoke_status', 'OK').catch(this.error);
+    }
   }
 
   /**
@@ -112,7 +123,11 @@ class SmokeDetectorDevice extends Homey.Device {
         const smokeDetected = status === true || status === 1 || status === '1' || status === 'true';
         await this.setCapabilityValue('alarm_smoke', smokeDetected);
 
-
+        // Update custom status string for Dropdown visibility
+        if (this.hasCapability('measure_smoke_status')) {
+          const statusText = smokeDetected ? 'Alarm' : 'OK';
+          await this.setCapabilityValue('measure_smoke_status', statusText);
+        }
       }
 
       // Update battery level

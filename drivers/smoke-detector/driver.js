@@ -122,6 +122,28 @@ class SmokeDetectorDriver extends Homey.Driver {
     // Store credentials in session object
     let credentials = null;
 
+    // Check for stored credentials
+    const stored = this.homey.app.getStoredCredentials();
+    this.log(`onPair: Stored credentials found? ${!!stored.email}`);
+
+    if (stored.email && stored.password) {
+      this.log('Found stored credentials, attempting auto-login');
+      try {
+        await this.homey.app.getAPIClient(stored.email, stored.password);
+        credentials = {
+          username: stored.email,
+          password: stored.password
+        };
+        this.log('Auto-login successful, advancing view');
+        // Add small delay to ensure UI is ready
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        // Use next() since we defined navigation in compose.json
+        await session.next();
+      } catch (error) {
+        this.log('Auto-login failed with stored credentials:', error);
+      }
+    }
+
     // For login_credentials template, we need to handle the 'login' event
     session.setHandler('login', async (data) => {
       try {
@@ -136,6 +158,9 @@ class SmokeDetectorDriver extends Homey.Driver {
           username: username,
           password: password
         };
+
+        // Save for future
+        this.homey.app.setStoredCredentials(username, password);
 
         this.log('Login successful, credentials stored');
         return true;

@@ -4,7 +4,15 @@ package-lock.json
 
 # Homey Build Artifacts
 .homeybuild/
+.homeybuild*/
 /.homeybuild/
+/.homeybuild*/
+
+# Logs and Debugging
+*.log
+*.pcap
+package-lock*.json
+!package-lock.json
 
 # Environment Variables & Secrets
 .env

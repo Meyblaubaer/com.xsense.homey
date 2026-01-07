@@ -27,6 +27,10 @@ Diese Homey App ermöglicht die Integration von XSense Rauchmeldern und anderen 
 - **SWS51** - Smart Water Leak Detector (mit eingebautem Alarm)
 - **SWS0A** - Smart Water Leak Detector (kompakt, nur Base Station Alarm)
 
+### Andere Sensoren
+- **XH02-M** - Hitzemelder (Heat Detector)
+- **MA01** - Briefkasten-Alarm (Mailbox Alarm)
+
 ## Installation
 
 1. Installiere die App über den Homey App Store oder lade sie manuell hoch
@@ -148,6 +152,14 @@ Die App nutzt jetzt **vollständige AWS Cognito SRP Authentication** für die Ve
 - NEU: Geräte-Filterung für alle Treiber (Rauch, Wasser, Temp, Heat, Mailbox) - zeigt nur noch relevante Geräte an
 - FIX: Geräte-Namen bereinigt (Redundantes "Basisstation" Präfix entfernt)
 - FIX: CO-Melder (XC) aus Rauchmelder-Treiber entfernt (jetzt im eigenen Treiber)
+
+### Version 1.0.12
+- NEU: Treiber für **Hitzemelder** (Heat Detector, XH02-M) hinzugefügt
+- NEU: Treiber für **Briefkasten-Alarm** (Mailbox Alarm, MA01) hinzugefügt
+- FIX: **Auto-Login repariert** - Anmeldedaten werden nun korrekt gespeichert (kein ständiges Ausloggen mehr)
+- FIX: **Rauchmelder-Statusanzeige** - Neuer "Rauchstatus" (Text + Icon) für zuverlässige Anzeige im Dashboard
+- FIX: **Daten-Updates (API-Fehler 500)** - "Authorization cannot be empty" Fehler durch automatischen Re-Login behoben
+- FIX: Verbesserte Daten-Erkennung für STH51 (Temperatur/Feuchtigkeit) und SC07-WX (CO-Werte)
 
 ### Version 1.0.8
 - Erste Veröffentlichung

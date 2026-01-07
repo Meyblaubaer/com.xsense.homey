@@ -17,3 +17,10 @@ Usage:
 1. Install this app.
 2. Add a new device in Homey.
 3. Log in with your X-Sense account credentials.
+
+v1.0.12:
+- NEW: Added Heat Detector (XH02-M) support
+- NEW: Added Mailbox Alarm (MA01) support
+- FIX: Solved Authentication Persistence issues (Auto-login)
+- FIX: Fixed Smoke Detector status indicator visibility
+- FIX: Stability improvements for Data Updates (API Error 500 fixed)

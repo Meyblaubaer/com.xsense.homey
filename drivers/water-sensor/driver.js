@@ -45,8 +45,7 @@ class WaterSensorDriver extends Homey.Driver {
             settings: {
               device_id: device.id,
               device_type: deviceType
-            },
-            icon: '/drivers/water-sensor/assets/images/small.png'
+            }
           });
         }
       }
@@ -63,11 +62,28 @@ class WaterSensorDriver extends Homey.Driver {
     // Keep this as fallback for now, but rely on passed session
     this.homey.app.currentPairSession = session;
 
+    // Check for stored credentials
+    const stored = this.homey.app.getStoredCredentials();
+    if (stored.email && stored.password) {
+      this.log('Found stored credentials, attempting auto-login');
+      try {
+        await this.homey.app.getAPIClient(stored.email, stored.password);
+        session.credentials = { username: stored.email, password: stored.password };
+        await session.showView('list_devices');
+      } catch (error) {
+        this.log('Auto-login failed with stored credentials');
+      }
+    }
+
     session.setHandler('login', async (data) => {
       try {
         const { username, password } = data;
         const api = await this.homey.app.getAPIClient(username, password);
         session.credentials = { username, password };
+
+        // Save for future
+        this.homey.app.setStoredCredentials(username, password);
+
         return true;
       } catch (error) {
         this.error('Login failed:', error);

@@ -1,0 +1,12 @@
+{
+    "type": "string",
+    "title": {
+        "en": "Smoke Status",
+        "de": "Rauchstatus"
+    },
+    "getable": true,
+    "setable": false,
+    "uiComponent": "sensor",
+    "icon": "assets/images/measure_smoke_status.svg",
+    "insights": true
+}

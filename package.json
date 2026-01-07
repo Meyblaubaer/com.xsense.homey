@@ -1,6 +1,6 @@
 {
   "name": "com.xsense.svenm",
-  "version": "1.0.2",
+  "version": "1.0.12",
   "description": "XSense integration for Homey",
   "main": "app.js",
   "scripts": {

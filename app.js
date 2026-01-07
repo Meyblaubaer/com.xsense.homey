@@ -110,6 +110,27 @@ class XSenseApp extends Homey.App {
     }
     this.apiClients.clear();
   }
+  /**
+   * Store credentials in settings
+   */
+  setStoredCredentials(email, password) {
+    this.log(`Saving credentials for ${email}`);
+    this.homey.settings.set('xsense_email', email);
+    this.homey.settings.set('xsense_password', password);
+  }
+
+  /**
+   * Get stored credentials
+   */
+  getStoredCredentials() {
+    const email = this.homey.settings.get('xsense_email');
+    const hasPassword = !!this.homey.settings.get('xsense_password');
+    this.log(`Retrieving credentials: ${email}, hasPassword: ${hasPassword}`);
+    return {
+      email: email,
+      password: this.homey.settings.get('xsense_password')
+    };
+  }
 }
 
 module.exports = XSenseApp;
