@@ -1,0 +1,324 @@
+'use strict';
+
+const mqtt = require('mqtt');
+const crypto = require('crypto');
+
+/**
+ * XSense API Client
+ * Based on the python-xsense library used in Home Assistant integration
+ *
+ * NOTE: XSense uses AWS Cognito for authentication. This is a simplified
+ * implementation. For production use, full AWS Cognito SRP authentication
+ * should be implemented.
+ */
+class XSenseAPI {
+  constructor(email, password) {
+    this.email = email;
+    this.password = password;
+    this.baseUrl = 'https://api.x-sense-iot.com';
+    this.accessToken = null;
+    this.refreshToken = null;
+    this.userId = null;
+    this.mqttClients = new Map();
+    this.devices = new Map();
+    this.stations = new Map();
+    this.updateCallbacks = [];
+
+    // AWS Cognito configuration (from python-xsense)
+    this.appVersion = 'v1.22.0_20240914.1';
+    this.appCode = '1220';
+    this.clientType = '1';
+  }
+
+  /**
+   * Initialize and authenticate with XSense API
+   */
+  async init() {
+    await this.login();
+    await this.getAllDevices();
+  }
+
+  /**
+   * Login to XSense API
+   */
+  async login() {
+    const response = await this._request('POST', '/api/v1/user/login', {
+      email: this.email,
+      password: this.password
+    });
+
+    if (response && response.data) {
+      this.accessToken = response.data.access_token;
+      this.refreshToken = response.data.refresh_token;
+      this.userId = response.data.user_id;
+      return true;
+    }
+
+    throw new Error('Login failed');
+  }
+
+  /**
+   * Get all devices from all houses
+   */
+  async getAllDevices() {
+    const houses = await this.getHouses();
+    const allDevices = [];
+    const allStations = [];
+
+    for (const house of houses) {
+      const stations = await this.getStations(house.id);
+
+      for (const station of stations) {
+        allStations.push({
+          ...station,
+          houseId: house.id
+        });
+
+        const devices = await this.getDevices(station.id);
+
+        for (const device of devices) {
+          allDevices.push({
+            ...device,
+            stationId: station.id,
+            houseId: house.id
+          });
+          this.devices.set(device.id, device);
+        }
+
+        this.stations.set(station.id, station);
+      }
+    }
+
+    return {
+      devices: allDevices,
+      stations: allStations
+    };
+  }
+
+  /**
+   * Get all houses for the user
+   */
+  async getHouses() {
+    const response = await this._request('GET', '/api/v1/houses');
+    return response?.data || [];
+  }
+
+  /**
+   * Get stations (base stations) for a house
+   */
+  async getStations(houseId) {
+    const response = await this._request('GET', `/api/v1/houses/${houseId}/stations`);
+    return response?.data || [];
+  }
+
+  /**
+   * Get devices for a station
+   */
+  async getDevices(stationId) {
+    const response = await this._request('GET', `/api/v1/stations/${stationId}/devices`);
+    return response?.data || [];
+  }
+
+  /**
+   * Get station state (connected status, etc.)
+   */
+  async getStationState(stationId) {
+    const response = await this._request('GET', `/api/v1/stations/${stationId}/state`);
+    return response?.data || {};
+  }
+
+  /**
+   * Test device alarm
+   */
+  async testAlarm(deviceId) {
+    const response = await this._request('POST', `/api/v1/devices/${deviceId}/test`);
+    return response?.success || false;
+  }
+
+  /**
+   * Mute device alarm
+   */
+  async muteAlarm(deviceId) {
+    const response = await this._request('POST', `/api/v1/devices/${deviceId}/mute`);
+    return response?.success || false;
+  }
+
+  /**
+   * Connect to MQTT for real-time updates
+   */
+  async connectMQTT(houseId, stationId) {
+    const mqttConfig = await this.getMQTTConfig(stationId);
+
+    if (!mqttConfig) {
+      console.error('Failed to get MQTT config');
+      return null;
+    }
+
+    const clientId = `homey_${this.userId}_${Date.now()}`;
+    const client = mqtt.connect(mqttConfig.broker, {
+      clientId: clientId,
+      username: mqttConfig.username,
+      password: mqttConfig.password,
+      clean: true,
+      reconnectPeriod: 5000
+    });
+
+    client.on('connect', () => {
+      console.log(`MQTT connected for station ${stationId}`);
+
+      // Subscribe to device topics
+      const topics = [
+        `house/${houseId}/event`,
+        `house/${houseId}/shadow/+/update`,
+        `house/${houseId}/presence/station/${stationId}`
+      ];
+
+      topics.forEach(topic => {
+        client.subscribe(topic, (err) => {
+          if (err) {
+            console.error(`Failed to subscribe to ${topic}:`, err);
+          }
+        });
+      });
+    });
+
+    client.on('message', (topic, message) => {
+      this._handleMQTTMessage(topic, message);
+    });
+
+    client.on('error', (error) => {
+      console.error('MQTT error:', error);
+    });
+
+    this.mqttClients.set(stationId, client);
+    return client;
+  }
+
+  /**
+   * Get MQTT configuration for a station
+   */
+  async getMQTTConfig(stationId) {
+    const response = await this._request('GET', `/api/v1/stations/${stationId}/mqtt`);
+    return response?.data || null;
+  }
+
+  /**
+   * Handle incoming MQTT messages
+   */
+  _handleMQTTMessage(topic, message) {
+    try {
+      const data = JSON.parse(message.toString());
+
+      // Update device or station data
+      if (data.deviceId && this.devices.has(data.deviceId)) {
+        const device = this.devices.get(data.deviceId);
+        Object.assign(device, data);
+
+        // Notify callbacks about update
+        this.updateCallbacks.forEach(callback => {
+          callback('device', device);
+        });
+      }
+
+      if (data.stationId && this.stations.has(data.stationId)) {
+        const station = this.stations.get(data.stationId);
+        Object.assign(station, data);
+
+        // Notify callbacks about update
+        this.updateCallbacks.forEach(callback => {
+          callback('station', station);
+        });
+      }
+    } catch (error) {
+      console.error('Error handling MQTT message:', error);
+    }
+  }
+
+  /**
+   * Register callback for device/station updates
+   */
+  onUpdate(callback) {
+    this.updateCallbacks.push(callback);
+  }
+
+  /**
+   * Disconnect all MQTT clients
+   */
+  disconnectMQTT() {
+    this.mqttClients.forEach(client => {
+      client.end();
+    });
+    this.mqttClients.clear();
+  }
+
+  /**
+   * Make HTTP request to XSense API
+   */
+  async _request(method, path, body = null) {
+    const url = `${this.baseUrl}${path}`;
+    const headers = {
+      'Content-Type': 'application/json'
+    };
+
+    if (this.accessToken) {
+      headers['Authorization'] = `Bearer ${this.accessToken}`;
+    }
+
+    const options = {
+      method: method,
+      headers: headers
+    };
+
+    if (body) {
+      options.body = JSON.stringify(body);
+    }
+
+    try {
+      const response = await fetch(url, options);
+
+      if (response.status === 401) {
+        // Token expired, try to refresh
+        await this.refreshAccessToken();
+        // Retry request
+        return this._request(method, path, body);
+      }
+
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+      }
+
+      return await response.json();
+    } catch (error) {
+      console.error(`API request failed: ${method} ${path}`, error);
+      throw error;
+    }
+  }
+
+  /**
+   * Refresh access token
+   */
+  async refreshAccessToken() {
+    const response = await this._request('POST', '/api/v1/user/refresh', {
+      refresh_token: this.refreshToken
+    });
+
+    if (response && response.data) {
+      this.accessToken = response.data.access_token;
+      return true;
+    }
+
+    throw new Error('Token refresh failed');
+  }
+
+  /**
+   * Cleanup resources
+   */
+  destroy() {
+    this.disconnectMQTT();
+    this.devices.clear();
+    this.stations.clear();
+    this.updateCallbacks = [];
+  }
+}
+
+module.exports = XSenseAPI;

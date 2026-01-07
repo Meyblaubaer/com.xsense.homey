@@ -38,3 +38,7 @@ Thumbs.db
 *.txt
 !README.txt
 reported_bugs.md
+
+X-Sense_API_Analyse_Dokumentation.md
+
+xsense_shadow.md

@@ -156,7 +156,8 @@ class SmokeDetectorDevice extends Homey.Device {
 
       // Update CO alarm
       if (this.hasCapability('alarm_co')) {
-        const coDetected = deviceData.coValue > 0 || deviceData.co > 0;
+        const coVal = Number(deviceData.coPpm || deviceData.coLevel || deviceData.coValue || deviceData.co || 0);
+        const coDetected = coVal > 0;
         const prevCO = this.getCapabilityValue('alarm_co');
         await this.setCapabilityValue('alarm_co', coDetected);
 
@@ -165,14 +166,14 @@ class SmokeDetectorDevice extends Homey.Device {
           await this.homey.flow.getDeviceTriggerCard('co_detected')
             .trigger(this, {
               device: this.getName(),
-              co_level: deviceData.coValue || deviceData.co || 0
+              co_level: coVal
             });
         }
       }
 
       // Update CO level (ppm)
       if (this.hasCapability('measure_co')) {
-        const coLevel = Number(deviceData.coValue || deviceData.co || 0);
+        const coLevel = Number(deviceData.coPpm || deviceData.coLevel || deviceData.coValue || deviceData.co || 0);
         await this.setCapabilityValue('measure_co', coLevel);
       }
 
