@@ -41,5 +41,8 @@
   },
   "1.0.12": {
     "en": "Bugfixes in API Requests (SHT51), not saving Login-Credentials and some Icon-Fixes. Smoke-Alarm can now be showed on Dashboard."
+  },
+  "1.0.14": {
+    "en": "Bugfixes with Temp.-readings and Code-Optimization"
   }
 }
