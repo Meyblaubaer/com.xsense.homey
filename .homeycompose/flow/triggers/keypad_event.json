@@ -1,0 +1,32 @@
+{
+    "title": {
+        "en": "Keypad Event",
+        "de": "Keypad-Ereignis"
+    },
+    "tokens": [
+        {
+            "name": "device",
+            "type": "string",
+            "title": {
+                "en": "Device",
+                "de": "Gerät"
+            }
+        },
+        {
+            "name": "event_type",
+            "type": "string",
+            "title": {
+                "en": "Event Type",
+                "de": "Ereignistyp"
+            }
+        }
+    ],
+    "args": [
+        {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=smoke-detector"
+        }
+    ],
+    "id": "keypad_event"
+}

@@ -85,6 +85,118 @@
           }
         ],
         "id": "device_muted"
+      },
+      {
+        "title": {
+          "en": "Keypad Event",
+          "de": "Keypad-Ereignis"
+        },
+        "tokens": [
+          {
+            "name": "device",
+            "type": "string",
+            "title": {
+              "en": "Device",
+              "de": "Gerät"
+            }
+          },
+          {
+            "name": "event_type",
+            "type": "string",
+            "title": {
+              "en": "Event Type",
+              "de": "Ereignistyp"
+            }
+          }
+        ],
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=smoke-detector"
+          }
+        ],
+        "id": "keypad_event"
+      },
+      {
+        "title": {
+          "en": "Smoke detected",
+          "de": "Rauch erkannt"
+        },
+        "tokens": [
+          {
+            "name": "device",
+            "type": "string",
+            "title": {
+              "en": "Device",
+              "de": "Gerät"
+            }
+          }
+        ],
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=smoke-detector"
+          }
+        ],
+        "id": "smoke_detected"
+      },
+      {
+        "title": {
+          "en": "SOS Button pressed",
+          "de": "SOS-Knopf gedrückt"
+        },
+        "tokens": [
+          {
+            "name": "device",
+            "type": "string",
+            "title": {
+              "en": "Device",
+              "de": "Gerät"
+            }
+          }
+        ],
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=smoke-detector"
+          }
+        ],
+        "id": "sos_pressed"
+      },
+      {
+        "title": {
+          "en": "Temperature changed",
+          "de": "Temperatur geändert"
+        },
+        "tokens": [
+          {
+            "name": "device",
+            "type": "string",
+            "title": {
+              "en": "Device",
+              "de": "Gerät"
+            }
+          },
+          {
+            "name": "temperature",
+            "type": "number",
+            "title": {
+              "en": "Temperature (°C)",
+              "de": "Temperatur (°C)"
+            }
+          }
+        ],
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=temperature-sensor"
+          }
+        ],
+        "id": "temperature_changed"
       }
     ],
     "conditions": [
@@ -104,6 +216,20 @@
       }
     ],
     "actions": [
+      {
+        "title": {
+          "en": "Mute Alarm",
+          "de": "Alarm stummschalten"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=smoke-detector"
+          }
+        ],
+        "id": "mute_alarm"
+      },
       {
         "title": {
           "en": "Test alarm",
@@ -527,6 +653,84 @@
                 "de": "Softwareversion"
               },
               "value": ""
+            }
+          ]
+        },
+        {
+          "type": "group",
+          "label": {
+            "en": "Configuration",
+            "de": "Konfiguration"
+          },
+          "children": [
+            {
+              "id": "alarm_volume",
+              "type": "number",
+              "label": {
+                "en": "Alarm Volume",
+                "de": "Alarmlautstärke"
+              },
+              "hint": {
+                "en": "Volume level (1-100)",
+                "de": "Lautstärkepegel (1-100)"
+              },
+              "min": 0,
+              "max": 100,
+              "value": 75
+            },
+            {
+              "id": "voice_volume",
+              "type": "number",
+              "label": {
+                "en": "Voice Volume",
+                "de": "Sprachlautstärke"
+              },
+              "min": 0,
+              "max": 100,
+              "value": 75
+            },
+            {
+              "id": "alarm_tone",
+              "type": "dropdown",
+              "label": {
+                "en": "Alarm Tone",
+                "de": "Alarmton"
+              },
+              "values": [
+                {
+                  "id": "1",
+                  "label": "Tone 1"
+                },
+                {
+                  "id": "2",
+                  "label": "Tone 2"
+                },
+                {
+                  "id": "3",
+                  "label": "Tone 3"
+                }
+              ],
+              "value": "1"
+            },
+            {
+              "id": "led_brightness",
+              "type": "number",
+              "label": {
+                "en": "LED Brightness",
+                "de": "LED Helligkeit"
+              },
+              "min": 0,
+              "max": 10,
+              "value": 8
+            },
+            {
+              "id": "is_fire_drill",
+              "type": "checkbox",
+              "label": {
+                "en": "Fire Drill Mode",
+                "de": "Feueralarm-Übungsmodus"
+              },
+              "value": false
             }
           ]
         }

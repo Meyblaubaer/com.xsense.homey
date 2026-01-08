@@ -66,6 +66,12 @@ class SmokeDetectorDevice extends Homey.Device {
     if (this.hasCapability('measure_smoke_status') && this.getCapabilityValue('measure_smoke_status') === null) {
       this.setCapabilityValue('measure_smoke_status', 'OK').catch(this.error);
     }
+
+    // Register Mute Action
+    this.homey.flow.getActionCard('mute_alarm')
+      .registerRunListener(async (args, state) => {
+        return args.device.muteAlarm();
+      });
   }
 
   /**
@@ -200,6 +206,26 @@ class SmokeDetectorDevice extends Homey.Device {
           });
       }
 
+      // Check for SOS Event
+      // Using generic 'event' field from _handleEventMessage or explicit 'sospush' if passed
+      if (deviceData.event === 'sospush' || deviceData.type === 'sospush') {
+        this.log('🚨 SOS Button Pressed!');
+        await this.homey.flow.getDeviceTriggerCard('sos_pressed')
+          .trigger(this, {
+            device: this.getName()
+          });
+      }
+
+      // Check for Keypad Event
+      if (deviceData.event === 'keyboard' || (deviceData.type === 'keyboard' && deviceData.keyAction)) {
+        this.log('⌨️ Keypad Event:', deviceData.keyAction);
+        await this.homey.flow.getDeviceTriggerCard('keypad_event')
+          .trigger(this, {
+            device: this.getName(),
+            event_type: deviceData.keyAction || 'unknown'
+          });
+      }
+
       // Update settings if changed
       if (deviceData.softwareVersion && deviceData.softwareVersion !== this.settings.software_version) {
         await this.setSettings({
@@ -228,6 +254,20 @@ class SmokeDetectorDevice extends Homey.Device {
   }
 
   /**
+   * Mute alarm
+   */
+  async muteAlarm() {
+    try {
+      this.log('Muting alarm...');
+      await this.api.muteAlarm(this.deviceData.id);
+      return true;
+    } catch (error) {
+      this.error('Error muting alarm:', error);
+      throw new Error(this.homey.__('error.mute_failed'));
+    }
+  }
+
+  /**
    * onAdded is called when the user adds the device.
    */
   async onAdded() {
@@ -238,7 +278,28 @@ class SmokeDetectorDevice extends Homey.Device {
    * onSettings is called when the user updates the device's settings.
    */
   async onSettings({ oldSettings, newSettings, changedKeys }) {
-    this.log('SmokeDetectorDevice settings were changed');
+    this.log('SmokeDetectorDevice settings were changed', changedKeys);
+
+    try {
+      const configUpdates = {};
+
+      if (changedKeys.includes('alarm_volume')) configUpdates.alarmVol = String(newSettings.alarm_volume);
+      if (changedKeys.includes('voice_volume')) configUpdates.voiceVol = String(newSettings.voice_volume);
+      if (changedKeys.includes('alarm_tone')) configUpdates.alarmTone = String(newSettings.alarm_tone);
+      if (changedKeys.includes('led_brightness')) configUpdates.ledBrt = String(newSettings.led_brightness);
+      if (changedKeys.includes('is_fire_drill')) configUpdates.isFireDrill = newSettings.is_fire_drill ? "1" : "0";
+
+      if (Object.keys(configUpdates).length > 0) {
+        // Need to identify if we are configuring the Station or the Device
+        // SC07-WX IS the station, but settings might be in 2nd_info or 2nd_systime
+        // Generally, we update the station shadow
+        await this.api.setStationConfig(this.deviceData.stationId || this.deviceData.id, configUpdates);
+        this.log('Settings updated successfully');
+      }
+    } catch (error) {
+      this.error('Failed to update settings:', error);
+      throw new Error(this.homey.__('error.settings_update_failed'));
+    }
   }
 
   /**

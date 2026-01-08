@@ -148,39 +148,7 @@ Die App nutzt jetzt **vollständige AWS Cognito SRP Authentication** für die Ve
 - Warte auf das nächste Update (alle 60 Sekunden)
 - Starte das Gerät in Homey neu
 
-## Changelog
 
-### Version 1.0.8
-- NEU: Volle Unterstützung für SC07-WX (CO, Temperatur, Alarm)
-- FIX: STH51 Temperatur & Luftfeuchtigkeit (Parsing für minifizierte Daten)
-- FIX: STH51 Gerätenamen (Auto-Renaming für "Station de base...")
-- FIX: "Another device is logged in" (Fehler 500) durch Auto-Relogin behoben
-- FIX: Batterie-Status für XS0B-MR Rauchmelder korrigiert
-- FIX: App-Absturz in der Polling-Schleife behoben
-
-### Version 1.0.9
-- NEU: Separater Treiber für **CO-Melder** (Kohlenmonoxid) hinzugefügt
-- NEU: Geräte-Filterung für alle Treiber (Rauch, Wasser, Temp, Heat, Mailbox) - zeigt nur noch relevante Geräte an
-- FIX: Geräte-Namen bereinigt (Redundantes "Basisstation" Präfix entfernt)
-- FIX: CO-Melder (XC) aus Rauchmelder-Treiber entfernt (jetzt im eigenen Treiber)
-
-### Version 1.0.16
-- FIX: **Kritischer Absturz behoben** - "getWiFiDeviceShadow is not a function" Fehler gefixt
-- FIX: Verbesserte Unterstützung für SC07-WX WiFi-Geräte
-
-### Version 1.0.12
-- NEU: Treiber für **Hitzemelder** (Heat Detector, XH02-M) hinzugefügt
-- NEU: Treiber für **Briefkasten-Alarm** (Mailbox Alarm, MA01) hinzugefügt
-- FIX: **Auto-Login repariert** - Anmeldedaten werden nun korrekt gespeichert (kein ständiges Ausloggen mehr)
-- FIX: **Rauchmelder-Statusanzeige** - Neuer "Rauchstatus" (Text + Icon) für zuverlässige Anzeige im Dashboard
-- FIX: **Daten-Updates (API-Fehler 500)** - "Authorization cannot be empty" Fehler durch automatischen Re-Login behoben
-- FIX: Verbesserte Daten-Erkennung für STH51 (Temperatur/Feuchtigkeit) und SC07-WX (CO-Werte)
-
-### Version 1.0.8
-- Erste Veröffentlichung
-- Unterstützung für Rauchmelder
-- MQTT Echtzeit-Updates
-- Flow Cards für Automation
 
 ## Support
 

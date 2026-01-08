@@ -16,8 +16,17 @@ xsense_sslkeylog*.log
 xsense_mqtt*.pcap
 
 # Build Artifacts
+# Build Artifacts
 .homeybuild/
+.homeybuild*/
 .homeycompose/
+
+# Unused Code
+hassio_py/
+
+# Allow Store READMEs
+!README.txt
+!README.de.txt
 
 # Documentation & Backups
 Github.md

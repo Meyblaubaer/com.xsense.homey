@@ -1,0 +1,31 @@
+{
+  "title": {
+    "en": "Temperature changed",
+    "de": "Temperatur geändert"
+  },
+  "tokens": [
+    {
+      "name": "device",
+      "type": "string",
+      "title": {
+        "en": "Device",
+        "de": "Gerät"
+      }
+    },
+    {
+      "name": "temperature",
+      "type": "number",
+      "title": {
+        "en": "Temperature (°C)",
+        "de": "Temperatur (°C)"
+      }
+    }
+  ],
+  "args": [
+    {
+      "type": "device",
+      "name": "device",
+      "filter": "driver_id=temperature-sensor"
+    }
+  ]
+}

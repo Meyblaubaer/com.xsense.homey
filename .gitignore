@@ -45,13 +45,14 @@ Thumbs.db
 # Other
 *.txt
 !README.txt
+!README.de.txt
 reported_bugs.md
 
 
 refresh.md
 
 X-Sense_API_Analyse*.md
-xsense_shadow.md
+# xsense_shadow.md
 problems.md
 
 plan01.md

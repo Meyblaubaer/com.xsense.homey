@@ -1,5 +1,11 @@
 # Changelog
 
+## Version 1.0.17
+
+### 📦 Store Updates
+- **FIX**: Localized READMEs (German/English)
+- **FIX**: Updated Store Icons to resolve distortion
+
 ## Version 1.0.16
 
 ### 🐛 Bug Fixes

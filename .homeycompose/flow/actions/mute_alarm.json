@@ -1,0 +1,14 @@
+{
+    "title": {
+        "en": "Mute Alarm",
+        "de": "Alarm stummschalten"
+    },
+    "args": [
+        {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=smoke-detector"
+        }
+    ],
+    "id": "mute_alarm"
+}
