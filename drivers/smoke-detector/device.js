@@ -40,8 +40,20 @@ class SmokeDetectorDevice extends Homey.Device {
       // Connect MQTT for real-time updates
       await this.api.connectMQTT(this.deviceData.houseId, this.deviceData.stationId);
 
-      // Initial data fetch
-      await this.updateDevice();
+      // Phase 1: Startup Synchronization (Blocking)
+      // fetch latest state from Cloud API/Shadow immediately
+      this.log('Performing startup synchronization...');
+      try {
+        const syncedData = await this.api.syncDevice(this.deviceData.id);
+        if (syncedData) {
+          await this._handleDeviceUpdate(syncedData);
+        } else {
+          await this.updateDevice();
+        }
+      } catch (e) {
+        this.error('Sync failed, falling back to updateDevice', e);
+        await this.updateDevice();
+      }
 
       // Setup polling
       this.pollInterval = setInterval(() => {
@@ -231,6 +243,12 @@ class SmokeDetectorDevice extends Homey.Device {
         await this.setSettings({
           software_version: deviceData.softwareVersion
         });
+      }
+
+      // Phase 2: Update Last Seen
+      const lastSeen = new Date().toLocaleString();
+      if (this.hasCapability('measure_last_seen')) {
+        await this.setCapabilityValue('measure_last_seen', lastSeen).catch(e => { }); // Silent catch 
       }
 
       await this.setAvailable();

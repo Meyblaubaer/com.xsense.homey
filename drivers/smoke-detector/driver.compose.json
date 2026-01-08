@@ -16,7 +16,8 @@
     "measure_temperature",
     "measure_humidity",
     "alarm_co",
-    "measure_co"
+    "measure_co",
+    "measure_last_seen"
   ],
   "energy": {
     "batteries": [

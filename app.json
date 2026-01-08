@@ -243,6 +243,13 @@
           }
         ],
         "id": "test_alarm"
+      },
+      {
+        "title": {
+          "en": "Trigger Fire Drill",
+          "de": "Hausalarm (Fire Drill) auslösen"
+        },
+        "id": "trigger_fire_drill"
       }
     ]
   },
@@ -569,7 +576,8 @@
         "measure_temperature",
         "measure_humidity",
         "alarm_co",
-        "measure_co"
+        "measure_co",
+        "measure_last_seen"
       ],
       "energy": {
         "batteries": [
@@ -943,6 +951,16 @@
     }
   ],
   "capabilities": {
+    "measure_last_seen": {
+      "type": "string",
+      "title": {
+        "en": "Last Seen",
+        "de": "Zuletzt gesehen"
+      },
+      "getable": true,
+      "setable": false,
+      "uiComponent": "sensor"
+    },
     "measure_smoke_status": {
       "type": "string",
       "title": {

@@ -1,0 +1,10 @@
+{
+    "type": "string",
+    "title": {
+        "en": "Last Seen",
+        "de": "Zuletzt gesehen"
+    },
+    "getable": true,
+    "setable": false,
+    "uiComponent": "sensor"
+}

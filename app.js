@@ -39,6 +39,25 @@ class XSenseApp extends Homey.App {
     testAlarmCard.registerRunListener(async (args, state) => {
       return await args.device.testAlarm();
     });
+
+    // Global Fire Drill Action
+    this.homey.flow.getActionCard('trigger_fire_drill')
+      .registerRunListener(async (args, state) => {
+        this.log('🚨 Starting Global Fire Drill! Triggering all smoke detectors...');
+        const driver = this.homey.drivers.getDriver('smoke-detector');
+        const devices = driver.getDevices();
+
+        // Trigger test on all devices to verify system integrity
+        // In real interconnect, one might suffice, but triggering all ensures coverage.
+        const promises = devices.map(device => {
+          return device.testAlarm()
+            .then(() => this.log(`Fire drill triggered on ${device.getName()}`))
+            .catch(err => this.error(`Failed to trigger fire drill on ${device.getName()}:`, err));
+        });
+
+        await Promise.all(promises);
+        return true;
+      });
   }
 
   /**
@@ -56,6 +75,17 @@ class XSenseApp extends Homey.App {
     }
 
     const client = new XSenseAPI(email, password);
+
+    // Register global error handler for this client
+    client.onUpdate((type, data) => {
+      if (type === 'error' && data && data.type === 'AUTH_FAILED') {
+        this.log('Received critical auth error, sending notification...');
+        this.homey.notifications.createNotification({
+          excerpt: `X-Sense Error: ${data.message}`
+        }).catch(err => this.error('Failed to send notification:', err));
+      }
+    });
+
     const initPromise = (async () => {
       try {
         await client.init();

@@ -3,6 +3,9 @@
 .git
 .gitignore
 .homeyignore
+.gemini/
+.vscode/
+.idea/
 
 # Dependencies
 node_modules/
