@@ -6,6 +6,11 @@ class TemperatureSensorDevice extends Homey.Device {
   async onInit() {
     this.log('TemperatureSensorDevice has been initialized');
 
+    // Force add Capability if missing (for existing devices)
+    if (!this.hasCapability('measure_signal_strength')) {
+      await this.addCapability('measure_signal_strength').catch(this.error);
+    }
+
     this.deviceData = this.getData();
     this.settings = this.getSettings();
 
@@ -82,6 +87,10 @@ class TemperatureSensorDevice extends Homey.Device {
       // Update temperature
       if (this.hasCapability('measure_temperature')) {
         const temp = deviceData.temperature || deviceData.temp;
+
+        // [Verification] Log raw values to ensure we use the best field
+        // this.log(`[Temp Verification] temperature=${deviceData.temperature}, temp=${deviceData.temp}`);
+
         if (temp !== undefined && temp !== null) {
           await this.setCapabilityValue('measure_temperature', temp);
 
@@ -92,6 +101,10 @@ class TemperatureSensorDevice extends Homey.Device {
       // Update humidity
       if (this.hasCapability('measure_humidity')) {
         const humidity = deviceData.humidity || deviceData.humi;
+
+        // [Verification] Log raw values
+        // this.log(`[Humidity Verification] humidity=${deviceData.humidity}, humi=${deviceData.humi}`);
+
         if (humidity !== undefined && humidity !== null) {
           await this.setCapabilityValue('measure_humidity', humidity);
 
@@ -128,6 +141,37 @@ class TemperatureSensorDevice extends Homey.Device {
         await this.setSettings({
           wifi_ssid: deviceData.wifiSsid
         });
+      }
+
+      // Phase 3: Update Signal Strength (RSSI)
+      if (this.hasCapability('measure_signal_strength')) {
+        // API often returns 'signal', 'rssi', 'rfLevel', or 'wifiSignal'
+
+        let signalVal = deviceData.signal || deviceData.rssi || deviceData.rfLevel || deviceData.signalLevel;
+
+        // Debug Log specifically for verification
+        // this.log(`[Signal Verification] Raw signal keys: signal=${deviceData.signal}, rssi=${deviceData.rssi}, rfLevel=${deviceData.rfLevel}, signalLevel=${deviceData.signalLevel}`);
+
+        if (signalVal !== undefined && signalVal !== null) {
+          let signalStrengthDbm = -100; // Default weak
+
+          if (typeof signalVal === 'number' && signalVal < 0) {
+            // Already dBm
+            signalStrengthDbm = signalVal;
+          } else {
+            // Likely bars or 0-100 scale
+            const s = parseInt(signalVal, 10);
+            if (!isNaN(s)) {
+              // Assumption: 1-4 bars
+              if (s >= 4) signalStrengthDbm = -55;
+              else if (s === 3) signalStrengthDbm = -67;
+              else if (s === 2) signalStrengthDbm = -79;
+              else if (s === 1) signalStrengthDbm = -91;
+              else if (s === 0) signalStrengthDbm = -100;
+            }
+          }
+          await this.setCapabilityValue('measure_signal_strength', signalStrengthDbm).catch(e => { });
+        }
       }
 
       await this.setAvailable();

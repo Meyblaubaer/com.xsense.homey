@@ -17,7 +17,8 @@
     "measure_humidity",
     "alarm_co",
     "measure_co",
-    "measure_last_seen"
+    "measure_last_seen",
+    "measure_signal_strength"
   ],
   "energy": {
     "batteries": [

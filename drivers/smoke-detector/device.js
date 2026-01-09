@@ -9,6 +9,11 @@ class SmokeDetectorDevice extends Homey.Device {
   async onInit() {
     this.log('SmokeDetectorDevice has been initialized');
 
+    // Force add Capability if missing (for existing devices)
+    if (!this.hasCapability('measure_signal_strength')) {
+      await this.addCapability('measure_signal_strength').catch(this.error);
+    }
+
     // Get device data
     this.deviceData = this.getData();
     this.settings = this.getSettings();
@@ -77,6 +82,10 @@ class SmokeDetectorDevice extends Homey.Device {
     }
     if (this.hasCapability('measure_smoke_status') && this.getCapabilityValue('measure_smoke_status') === null) {
       this.setCapabilityValue('measure_smoke_status', 'OK').catch(this.error);
+    }
+    if (this.hasCapability('measure_signal_strength') && this.getCapabilityValue('measure_signal_strength') === null) {
+      // Default to something reasonable or leave null until update
+      // this.setCapabilityValue('measure_signal_strength', -60).catch(this.error);
     }
 
     // Register Mute Action
@@ -249,6 +258,46 @@ class SmokeDetectorDevice extends Homey.Device {
       const lastSeen = new Date().toLocaleString();
       if (this.hasCapability('measure_last_seen')) {
         await this.setCapabilityValue('measure_last_seen', lastSeen).catch(e => { }); // Silent catch 
+      }
+
+      // Phase 3: Update Signal Strength (RSSI)
+      if (this.hasCapability('measure_signal_strength')) {
+        // API often returns 'signal', 'rssi', 'rfLevel', or 'wifiSignal'
+        // X-Sense often uses 1-4 bars or similar. We need to check what we get.
+        // If it's bars (1-4), map to dBm: 4=-50, 3=-65, 2=-80, 1=-95
+        // If it's already dBm, use it directly.
+
+
+        let signalVal = deviceData.signal || deviceData.rssi || deviceData.rfLevel || deviceData.signalLevel;
+
+        if (signalVal !== undefined && signalVal !== null) {
+          let signalStrengthDbm = -100; // Default weak
+
+          if (typeof signalVal === 'number' && signalVal < 0) {
+            // Already dBm
+            signalStrengthDbm = signalVal;
+          } else {
+            // Likely bars or 0-100 scale
+            const s = parseInt(signalVal, 10);
+            if (!isNaN(s)) {
+              // Assumption: 1-4 bars
+              if (s >= 4) signalStrengthDbm = -55;
+              else if (s === 3) signalStrengthDbm = -67;
+              else if (s === 2) signalStrengthDbm = -79;
+              else if (s === 1) signalStrengthDbm = -91;
+              else if (s === 0) signalStrengthDbm = -100;
+              // If scale is 0-100 (percentage)
+              // else signalStrengthDbm = -100 + (s/2); 
+            }
+          }
+          await this.setCapabilityValue('measure_signal_strength', signalStrengthDbm).catch(e => { });
+        }
+      }
+
+      // [Verification] Log all keys to help identify hidden CO fields
+      if (this.hasCapability('measure_co')) {
+        // this.log(`[CO Verification] Device Data Keys: ${Object.keys(deviceData).join(', ')}`);
+        // this.log(`[CO Verification] CO Values: coPpm=${deviceData.coPpm}, coLevel=${deviceData.coLevel}, co=${deviceData.co}`);
       }
 
       await this.setAvailable();
