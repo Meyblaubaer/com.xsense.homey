@@ -25,9 +25,8 @@
     "@aws-sdk/client-cognito-identity-provider": "^3.698.0",
     "aws4": "^1.13.2",
     "cognito-srp-helper": "^2.1.0",
-    "mqtt": "^4.3.8",
-    "node-fetch": "^2.7.0",
-    "paho-mqtt": "^1.1.0"
+    "mqtt": "^5.14.1",
+    "node-fetch": "^2.7.0"
   },
   "engines": {
     "node": ">=16"
