@@ -13,13 +13,17 @@ class XSenseApp extends Homey.App {
     // Initialize API client storage
     this.apiClients = new Map();
 
+    // MQTT Health Tracking (NEW)
+    this.mqttHealthy = new Map(); // houseId → boolean
+
     // Register flow card actions
     this._registerFlowCards();
 
-    // Start polling for updates every 30 seconds
+    // Coordinated polling: Only when MQTT is unhealthy
+    // Increased to 60s to reduce API load
     this.pollInterval = setInterval(() => {
-      this._pollDeviceUpdates();
-    }, 30000);
+      this._pollDeviceUpdatesIfNeeded();
+    }, 60000); // Changed from 30000 to 60000
   }
 
   /**
@@ -74,7 +78,7 @@ class XSenseApp extends Homey.App {
       return await existing;
     }
 
-    const client = new XSenseAPI(email, password);
+    const client = new XSenseAPI(email, password, this.homey);
 
     // Register global error handler for this client
     client.onUpdate((type, data) => {
@@ -102,26 +106,48 @@ class XSenseApp extends Homey.App {
   }
 
   /**
-   * Poll all devices for updates
+   * Poll device updates only if MQTT is unhealthy
+   * Reduces API calls when real-time updates work
    */
-  async _pollDeviceUpdates() {
-    // keys are "email:password"
-    for (const key of this.apiClients.keys()) {
+  async _pollDeviceUpdatesIfNeeded() {
+    for (const [key, clientOrPromise] of this.apiClients.entries()) {
       try {
-        // Splitting key is not safe if password contains colon, but we can reconstruct params or change storage.
-        // Better: iterate keys and assume getAPIClient returns the ready instance/promise
-        // Actually, let's just use the map values, but we need to await them.
-
-        const clientOrPromise = this.apiClients.get(key);
         const client = await clientOrPromise;
-
-        if (client && typeof client.getAllDevices === 'function') {
-          await client.getAllDevices();
+        if (!client || typeof client.getAllDevices !== 'function') {
+          continue;
         }
+
+        // Check if MQTT is healthy for all houses of this client
+        const houses = Array.from(client.houses.values());
+        const needsPolling = houses.some(house => {
+          const isHealthy = this.mqttHealthy.get(house.houseId);
+          return isHealthy !== true; // Poll if unhealthy or unknown
+        });
+
+        if (needsPolling) {
+          this.log(`Polling updates for client (MQTT unhealthy or unknown)`);
+          await client.getAllDevices();
+        } else {
+          // Log less frequently (only every 10 minutes)
+          if (!this._lastSkipLog || (Date.now() - this._lastSkipLog) > 600000) {
+            this.log('Skipping poll - MQTT is healthy for all houses');
+            this._lastSkipLog = Date.now();
+          }
+        }
+
       } catch (error) {
         this.error('Error polling device updates:', error);
       }
     }
+  }
+
+  /**
+   * Set MQTT health status for a house
+   * Called by XSenseAPI when MQTT connects/disconnects
+   */
+  setMQTTHealth(houseId, isHealthy) {
+    this.mqttHealthy.set(houseId, isHealthy);
+    this.log(`MQTT health for house ${houseId}: ${isHealthy ? 'HEALTHY' : 'UNHEALTHY'}`);
   }
 
   /**
