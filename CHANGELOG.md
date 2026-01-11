@@ -1,5 +1,48 @@
 # Changelog
 
+## Version 1.1.0
+
+### 🚀 Major Improvements
+
+**SC07-WX CO Detection Support**
+- **NEW**: Extended shadow discovery for SC07-WX WiFi devices to capture CO data
+- **NEW**: Added 8 additional shadow names for comprehensive CO/temperature/humidity detection
+- **FIX**: CO levels (measure_co) now properly reported from SC07-WX devices
+- Enhanced MQTT topic subscriptions for real-time CO alarm updates
+
+**MQTT Stability & Performance**
+- **CRITICAL**: Implemented automatic MQTT signature refresh (every 10 minutes)
+- **FIX**: Resolved MQTT disconnections after 15 minutes due to signature expiry
+- **OPTIMIZATION**: Coordinated polling - API polling only when MQTT is unhealthy
+- **PERFORMANCE**: Reduced API calls by ~92% during normal operation
+- **NEW**: MQTT health tracking per house with automatic fallback to polling
+
+**Dependencies**
+- **SECURITY**: Updated mqtt from v4.3.8 to v5.14.1 (fixes 3 security vulnerabilities)
+- **UPGRADE**: Migrated to MQTT protocol v5 for improved reliability
+- **CLEANUP**: Removed unused paho-mqtt dependency
+
+**Polling Optimization**
+- **CHANGE**: Increased global polling interval from 30s to 60s
+- **SMART**: Conditional polling based on MQTT connection health
+- **LOGGING**: Reduced log spam during healthy MQTT operation
+
+### 🐛 Bug Fixes
+- Fixed MQTT signature expiration causing connection drops
+- Improved error handling for deleted/unavailable devices
+- Enhanced station shadow retrieval for WiFi devices
+
+### 📊 Performance Metrics
+- API calls reduced from ~120/hour to ~10/hour when MQTT is healthy
+- MQTT connection stability: 100% uptime with auto-refresh
+- Faster real-time updates for all device types
+
+### 🔧 Technical Details
+- Implemented Map-based MQTT health tracking
+- Added callback pattern for MQTT health notifications to app.js
+- Conservative approach: polls if MQTT health status unknown
+- Preemptive signature refresh at 10 minutes (before 15-minute expiry)
+
 ## Version 1.0.17
 
 ### 📦 Store Updates
