@@ -1,0 +1,22 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(npm install:*)",
+      "Bash(npm uninstall:*)",
+      "Bash(homey app validate:*)",
+      "Bash(xargs ls:*)",
+      "Bash(sips:*)",
+      "Bash(export PATH=\"/usr/local/bin:$PATH\")",
+      "Bash(homey --version:*)",
+      "Bash(npm root:*)",
+      "Bash(node:*)",
+      "Bash(uniq -c echo \"\" echo \"Device types seen:\" grep -o 'deviceType\"\"\"\":\"\"\"\"[^\"\"\"\"]*' /tmp/homey-test.log)",
+      "Bash(uniq -c echo echo '=== MQTT TOPIC ACTIVITY ===' grep 'Subscribed to' /tmp/homey-test.log)",
+      "Bash(pkill:*)",
+      "Bash(python3:*)",
+      "Bash(tail -1 python3 -c \" import json with open\\(''/tmp/sth51-tempdata.json''\\) as f: line = f.read\\(\\) # Extract JSON from log line json_start = line.find\\(''{''\\) if json_start > 0: json_str = line[json_start:] data = json.loads\\(json_str\\) print\\(json.dumps\\(data, indent=2\\)\\) \")"
+    ]
+  }
+}
