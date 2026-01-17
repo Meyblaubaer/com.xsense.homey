@@ -4,13 +4,23 @@
 
 ### 🔧 Bug Fixes
 
-**WiFi Device Battery Handling**
-- **FIX**: Battery status no longer shown for WiFi devices with hardwired 10-year batteries
-- **DEVICES**: XP0A-iR, XC04-WX, XC01-WX, XS01-WX, SC07-WX now correctly identified as hardwired
-- **REASON**: These devices don't report `batInfo` as batteries are non-replaceable
-- **BEHAVIOR**: Matches Home Assistant integration behavior
-- **ANALYSIS**: Enhanced shadow discovery with `info_{sn}`, `mode_{sn}`, `status` shadows
-- **TECHNICAL**: Added device type check before attempting battery capability updates
+**CRITICAL: SC07-WX Battery Status Fix**
+- **FIX**: SC07-WX battery status now working correctly (was showing "undefined")
+- **ROOT CAUSE**: SC07-WX sends battery in `mainpage` shadow's `devs` structure, not directly
+- **SOLUTION**: Added `devs` map parsing in `_handleWiFiDeviceShadow()` MQTT handler
+- **RESULT**: SC07-WX now shows correct battery level (0-100%) and battery alarms
+- **COMPARISON**: Matches Home Assistant integration behavior (verified against hassio_py)
+
+**WiFi Device Battery Classification - CORRECTED**
+- **BATTERY SUPPORTED** (3x AA replaceable):
+  - SC07-WX (WiFi CO Detector)
+  - XS01-WX (WiFi Smoke Detector)
+- **NO BATTERY REPORTING** (10-year hardwired lithium):
+  - XP0A-iR (WiFi Smoke & CO Combo)
+  - XC04-WX (WiFi CO Detector - hardwired variant)
+  - XC01-WX (WiFi CO Detector - hardwired variant)
+- **FIX**: Removed incorrect battery exclusion for SC07-WX and XS01-WX
+- **TECHNICAL**: Updated `isHardwiredWiFi` check in drivers to exclude only truly hardwired devices
 
 ### 🚀 Improvements
 

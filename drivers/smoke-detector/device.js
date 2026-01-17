@@ -159,9 +159,10 @@ class SmokeDetectorDevice extends Homey.Device {
 
       // Update battery level
       // ONLY for devices that report batInfo (RF devices with replaceable batteries)
-      // WiFi devices with hardwired 10-year batteries (XP0A-iR, XC04-WX, XS01-WX) don't report batInfo
+      // WiFi devices with hardwired 10-year batteries (XP0A-iR, XC04-WX, XS01-WX, XC01-WX) don't report batInfo
+      // SC07-WX DOES report battery via mainpage devs structure, so it's NOT excluded
       const deviceType = this.getSetting('deviceType') || '';
-      const isHardwiredWiFi = ['XP0A-iR', 'XC04-WX', 'XS01-WX', 'SC07-WX', 'XC01-WX', 'XS01-WX'].includes(deviceType);
+      const isHardwiredWiFi = ['XP0A-iR', 'XC04-WX', 'XS01-WX', 'XC01-WX'].includes(deviceType);
 
       if (!isHardwiredWiFi && this.hasCapability('measure_battery') && deviceData.batInfo !== undefined) {
         let batteryLevel = 100;

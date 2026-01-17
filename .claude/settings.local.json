@@ -26,7 +26,8 @@
       "Bash(export XSENSE_DEBUG=true)",
       "Bash(timeout 120 homey app run:*)",
       "Bash(docker:*)",
-      "Bash(open:*)"
+      "Bash(open:*)",
+      "Bash(ls:*)"
     ]
   }
 }
