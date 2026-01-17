@@ -16,7 +16,17 @@
       "Bash(uniq -c echo echo '=== MQTT TOPIC ACTIVITY ===' grep 'Subscribed to' /tmp/homey-test.log)",
       "Bash(pkill:*)",
       "Bash(python3:*)",
-      "Bash(tail -1 python3 -c \" import json with open\\(''/tmp/sth51-tempdata.json''\\) as f: line = f.read\\(\\) # Extract JSON from log line json_start = line.find\\(''{''\\) if json_start > 0: json_str = line[json_start:] data = json.loads\\(json_str\\) print\\(json.dumps\\(data, indent=2\\)\\) \")"
+      "Bash(tail -1 python3 -c \" import json with open\\(''/tmp/sth51-tempdata.json''\\) as f: line = f.read\\(\\) # Extract JSON from log line json_start = line.find\\(''{''\\) if json_start > 0: json_str = line[json_start:] data = json.loads\\(json_str\\) print\\(json.dumps\\(data, indent=2\\)\\) \")",
+      "Bash(tee:*)",
+      "Bash(docker-compose up:*)",
+      "Bash(find:*)",
+      "Bash(chmod:*)",
+      "Bash(npm ls:*)",
+      "Bash(/private/tmp/run-xsense-debug.sh:*)",
+      "Bash(export XSENSE_DEBUG=true)",
+      "Bash(timeout 120 homey app run:*)",
+      "Bash(docker:*)",
+      "Bash(open:*)"
     ]
   }
 }

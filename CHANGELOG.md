@@ -1,5 +1,33 @@
 # Changelog
 
+## Version 1.1.1
+
+### 🔧 Bug Fixes
+
+**WiFi Device Battery Handling**
+- **FIX**: Battery status no longer shown for WiFi devices with hardwired 10-year batteries
+- **DEVICES**: XP0A-iR, XC04-WX, XC01-WX, XS01-WX, SC07-WX now correctly identified as hardwired
+- **REASON**: These devices don't report `batInfo` as batteries are non-replaceable
+- **BEHAVIOR**: Matches Home Assistant integration behavior
+- **ANALYSIS**: Enhanced shadow discovery with `info_{sn}`, `mode_{sn}`, `status` shadows
+- **TECHNICAL**: Added device type check before attempting battery capability updates
+
+### 🚀 Improvements
+
+**STH51/STH54/STH0A Temperature Sensor Support - Complete**
+- **NEW**: Added `2nd_apptempdata` MQTT topic subscription
+- **NEW**: Implemented `_handleTempDataLog()` for real-time temperature/humidity updates
+- **FIX**: Temperature parsed from `status.b` field (API polling)
+- **FIX**: Humidity parsed from `status.c` field (API polling)
+- **FEATURE**: Dual update sources (60s polling + real-time MQTT)
+- **FORMAT**: Correctly parses CSV format from `2nd_tempdatalog` topic
+
+**Shadow Discovery Enhancement**
+- **NEW**: Added `info_{sn}` shadow for WiFi devices (XS01-WX pattern)
+- **NEW**: Added `mode_{sn}` shadow for WiFi device configuration
+- **NEW**: Added `status` fallback shadow (without prefix)
+- **IMPROVE**: More comprehensive WiFi device data collection
+
 ## Version 1.1.0
 
 ### 🚀 Major Improvements

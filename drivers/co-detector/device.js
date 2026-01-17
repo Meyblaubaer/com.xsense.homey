@@ -116,8 +116,12 @@ class CoDetectorDevice extends Homey.Device {
       }
 
       // Update battery level
-      // batInfo: "3" (full) or "1" (low) usually for X-Sense. Scale 0-3?
-      if (this.hasCapability('measure_battery') && deviceData.batInfo !== undefined) {
+      // ONLY for devices that report batInfo (RF devices with replaceable batteries)
+      // WiFi devices with hardwired 10-year batteries (XP0A-iR, XC04-WX, XC01-WX) don't report batInfo
+      const deviceType = this.getSetting('deviceType') || '';
+      const isHardwiredWiFi = ['XP0A-iR', 'XC04-WX', 'XC01-WX', 'SC07-WX'].includes(deviceType);
+
+      if (!isHardwiredWiFi && this.hasCapability('measure_battery') && deviceData.batInfo !== undefined) {
         let batteryLevel = 100;
         const bat = parseInt(deviceData.batInfo, 10);
 
@@ -133,8 +137,6 @@ class CoDetectorDevice extends Homey.Device {
         if (this.hasCapability('alarm_battery')) {
           const lowBattery = batteryLevel < 20;
           await this.setCapabilityValue('alarm_battery', lowBattery);
-
-
         }
       }
 
