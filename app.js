@@ -82,11 +82,20 @@ class XSenseApp extends Homey.App {
 
     // Register global error handler for this client
     client.onUpdate((type, data) => {
-      if (type === 'error' && data && data.type === 'AUTH_FAILED') {
-        this.log('Received critical auth error, sending notification...');
-        this.homey.notifications.createNotification({
-          excerpt: `X-Sense Error: ${data.message}`
-        }).catch(err => this.error('Failed to send notification:', err));
+      if (type === 'error' && data) {
+        // Handle different error types with appropriate user notifications
+        if (data.type === 'AUTH_FAILED' || data.type === 'SESSION_EXPIRED') {
+          this.log('Received critical auth/session error, sending notification...');
+          this.homey.notifications.createNotification({
+            excerpt: `X-Sense: ${data.message}`
+          }).catch(err => this.error('Failed to send notification:', err));
+        } else if (data.type === 'SERVER_ERROR') {
+          // Only notify on persistent server errors (already filtered in XSenseAPI)
+          this.log(`X-Sense server error (${data.errorCode}), backoff: ${data.backoffMinutes}min`);
+          this.homey.notifications.createNotification({
+            excerpt: `X-Sense: ${data.message}`
+          }).catch(err => this.error('Failed to send notification:', err));
+        }
       }
     });
 

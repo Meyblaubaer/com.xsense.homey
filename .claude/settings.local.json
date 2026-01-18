@@ -43,7 +43,10 @@
       "Bash(git check-ignore:*)",
       "Bash(echo \"=== CODE QUALITY ISSUES ===\" echo \"\" echo \"1. Console.log Statements \\(sollten this.log/this.error sein\\):\" echo \"\" grep -rn \"console\\\\.log\\\\|console\\\\.error\\\\|console\\\\.warn\" --include=\"*.js\" lib/ drivers/ app.js)",
       "Bash(echo \"=== FINALE ZUSAMMENFASSUNG ===\" echo \"\" echo \"✅ DURCHGEFÜHRTE OPTIMIERUNGEN:\" echo \"\" echo \"1. App Metadata verbessert:\" echo \" • Category erweitert: security + climate\" echo \" • Tags hinzugefügt: 17 EN + 15 DE Keywords\" echo \"\" echo \"2. Dokumentation erstellt:\" echo \" • README.md \\(professionell und umfassend\\)\" echo \" • OPTIMIZATION_RECOMMENDATIONS.md \\(Analyse\\)\" echo \" • LOG_ANALYSE_5MIN.md \\(Test-Report\\)\" echo \" • OPTIMIZATION_SUMMARY.md \\(Zusammenfassung\\)\" echo \"\" echo \"3. Validierung:\" echo \" • ✓ App validated successfully against level ''publish''\" echo \"\" echo \"📊 COMPLIANCE STATUS:\" echo \" • SDK Level: publish ✅\" echo \" • Alle Driver: compliant ✅\" echo \" • Alle Devices: compliant ✅\" echo \" • Flow Cards: 10 Cards ✅\" echo \" • Localization: EN + DE ✅\" echo \" • Error Handling: 91 try-catch ✅\" echo \"\" echo \"🎯 STATUS: READY FOR PUBLICATION 🚀\" echo \"\" echo \"📁 Neue Dateien:\" ls -lh *.md)",
-      "Bash(echo \"=== Analysiere Dateien mit potentiell persönlichen Daten ===\" echo \"\" echo \"1. Analyse-Dateien \\(könnten sensible Infos enthalten\\):\" ls -lh *.md)"
+      "Bash(echo \"=== Analysiere Dateien mit potentiell persönlichen Daten ===\" echo \"\" echo \"1. Analyse-Dateien \\(könnten sensible Infos enthalten\\):\" ls -lh *.md)",
+      "Bash(homey app install:*)",
+      "Bash(homey app log:*)",
+      "Bash(curl:*)"
     ]
   }
 }
