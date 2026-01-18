@@ -1,32 +1,123 @@
+# ============================================
+# X-Sense Homey App - .gitignore
+# ============================================
+
 # Dependencies
 node_modules/
 package-lock.json
+package-lock*.json
 
 # Homey Build Artifacts
 .homeybuild/
 .homeybuild*/
 /.homeybuild/
 /.homeybuild*/
+*.homeybuild_old/
 
-# Logs and Debugging
-*.log
-*.pcap
-package-lock*.json
-!package-lock.json
+# ============================================
+# Logs & Debug Files
+# ============================================
 
-# Environment Variables & Secrets
-.env
-env.json
-*.env
-
-# Logs and Debugging
+# All log files
 *.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-*.pcap
 
+# Network captures (may contain sensitive data)
+*.pcap
+*.pcapng
+
+# SSL/TLS debug logs (contain keys!)
+*sslkeylog*.log
+xsense_sslkeylog*.log
+
+# Homey test logs
+homey_*.log
+runtime_test.log
+optimized_test.log
+install.log
+validation_report.txt
+
+# ============================================
+# Environment & Secrets
+# ============================================
+
+# Environment variables (passwords, tokens)
+.env
+.env.*
+env.json
+*.env
+
+# Homey settings (may contain credentials)
+.homeyrc
+options.json
+settings.json
+
+# Claude settings (local preferences)
+.claude/settings.local.json
+
+# Debug configurations (may have sensitive URLs)
+signer-debug.json
+*debug*.json
+!package.json
+
+# ============================================
+# Development & Analysis Files
+# ============================================
+
+# Python debug scripts (temporary)
+*.py
+!setup.py
+
+# Temporary text files
+*.txt
+!README.txt
+!README.de.txt
+!LICENSE.txt
+
+# Analysis & Planning Documents (development only)
+plan*.md
+*plan*.md
+refresh.md
+problems.md
+reported_bugs.md
+Fortschritt.md
+TODO.md
+Github.md
+
+# Debug & Analysis Reports
+DEBUG_*.md
+*DEBUG*.md
+*ANALYSIS*.md
+*FINDINGS*.md
+*_FIX*.md
+DEVICE_ANALYSIS.md
+MQTT_ANALYSIS_REPORT.md
+SHADOW_TOPICS_COMPLETE.md
+xsense_shadow.md
+X-Sense_API_Analyse*.md
+
+# Implementation & Test Reports (keep in separate docs/)
+IMPLEMENTATION_REPORT.md
+TEST_REPORT_*.md
+LOG_ANALYSE_*.md
+QUICK_DEBUG_START.md
+PHASE4_IMAGE_REQUIREMENTS.md
+
+# Temporary development files
+add_debouncing_example.txt
+signer_debug_*.txt
+convert_console_to_logger.js
+update_flow_cards.sh
+analyze_*.sh
+find_*.sh
+compliance_check.sh
+
+# ============================================
 # OS Generated Files
+# ============================================
+
 .DS_Store
 .DS_Store?
 ._*
@@ -34,25 +125,48 @@ yarn-error.log*
 .Trashes
 ehthumbs.db
 Thumbs.db
+desktop.ini
 
+# ============================================
 # IDE & Editor Files
+# ============================================
+
 .idea/
 .vscode/
 *.swp
 *.swo
 *~
+*.sublime-*
+.project
+.settings/
 
-# Other
-*.txt
-!README.txt
-!README.de.txt
-reported_bugs.md
+# ============================================
+# KEEP THESE FILES (Documentation)
+# ============================================
 
+# These important files should be committed:
+!README.md
+!CHANGELOG.md
+!LICENSE.md
+!INSTALLATION.md
+!OPTIMIZATIONS_COMPLETED.md
+!OPTIMIZATION_RECOMMENDATIONS.md
+!OPTIMIZATION_SUMMARY.md
+!TEST_REPORT_OPTIMIZED.md
 
-refresh.md
+# Integration guides
+!lib/MQTT_RECONNECT_INTEGRATION.md
 
-X-Sense_API_Analyse*.md
-# xsense_shadow.md
-problems.md
+# ============================================
+# MQTT/Shadow Captures (Sensitive!)
+# ============================================
 
-plan01.md
+# JSON captures may contain device IDs, SNs, etc.
+*capture*.json
+*shadow*.json
+*mqtt*.json
+xsense_mqtt_*.json
+xsense_debug_*.json
+
+# Homey changelog (auto-generated)
+.homeychangelog.json
