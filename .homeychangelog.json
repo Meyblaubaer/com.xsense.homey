@@ -54,5 +54,8 @@
   },
   "1.0.17": {
     "en": "Bug-Fixes, Updating Code-Base, Refining Code, Automated AWS-Token refresh"
+  },
+  "1.1.2": {
+    "en": "Several Bugfixing and cleaning the code"
   }
 }
