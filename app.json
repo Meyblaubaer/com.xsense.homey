@@ -431,6 +431,104 @@
     },
     {
       "name": {
+        "en": "Door/Window Sensor",
+        "de": "Tür-/Fenstersensor"
+      },
+      "class": "sensor",
+      "images": {
+        "large": "drivers/door-sensor/assets/images/large.png",
+        "small": "drivers/door-sensor/assets/images/small.png"
+      },
+      "capabilities": [
+        "alarm_contact",
+        "alarm_battery",
+        "measure_battery",
+        "measure_signal_strength"
+      ],
+      "energy": {
+        "batteries": [
+          "CR2032"
+        ]
+      },
+      "platforms": [
+        "local"
+      ],
+      "connectivity": [
+        "cloud"
+      ],
+      "pair": [
+        {
+          "id": "login_credentials",
+          "template": "login_credentials",
+          "options": {
+            "title": {
+              "en": "Login to XSense",
+              "de": "Bei XSense anmelden"
+            },
+            "usernameLabel": {
+              "en": "Email",
+              "de": "E-Mail"
+            },
+            "usernamePlaceholder": {
+              "en": "email@example.com",
+              "de": "email@beispiel.de"
+            },
+            "passwordLabel": {
+              "en": "Password",
+              "de": "Passwort"
+            },
+            "passwordPlaceholder": {
+              "en": "Password",
+              "de": "Passwort"
+            }
+          }
+        },
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "prev": "login_credentials",
+            "next": "add_devices"
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ],
+      "settings": [
+        {
+          "type": "group",
+          "label": {
+            "en": "Device Information",
+            "de": "Geräteinformationen"
+          },
+          "children": [
+            {
+              "id": "device_id",
+              "type": "label",
+              "label": {
+                "en": "Device ID",
+                "de": "Geräte-ID"
+              },
+              "value": ""
+            },
+            {
+              "id": "device_type",
+              "type": "label",
+              "label": {
+                "en": "Device Type",
+                "de": "Gerätetyp"
+              },
+              "value": ""
+            }
+          ]
+        }
+      ],
+      "id": "door-sensor"
+    },
+    {
+      "name": {
         "en": "Heat Detector",
         "de": "Hitzemelder"
       },
