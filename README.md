@@ -1,163 +1,153 @@
-# XSense for Homey
+# X-Sense for Homey
 
-Diese Homey App ermöglicht die Integration von XSense Rauchmeldern und anderen XSense Sicherheitsgeräten in Homey Self Hosted.
+![X-Sense Logo](assets/images/large.png)
 
-## Funktionen
+Connect your X-Sense security and climate monitoring devices to Homey for smart home automation and alerts!
 
-- **Rauch- und CO-Erkennung**: Empfange Alarme bei Rauch- oder Kohlenmonoxid-Detektion
-- **Batteriestatus**: Überwache den Batteriestatus deiner Geräte
-- **Temperatur & Luftfeuchtigkeit**: Zeige Umgebungsdaten an (für unterstützte Geräte)
-- **Echtzeit-Updates**: MQTT-basierte Live-Updates von deinen Geräten
-- **Flow-Integration**: Nutze XSense-Geräte in Homey Flows
+## 🔥 Supported Devices
 
-## Unterstützte Geräte
+### Security Devices
+- **Smoke Detectors**
+  - XS01-WT (WiFi)
+  - XS0B-MR (Base Station)
+  - SC07-WX (WiFi with Display)
+- **CO Detectors** (Carbon Monoxide)
+- **Heat Detectors**
+- **Water Leak Sensors**
 
-### Rauchmelder & CO-Melder
-- XSense Rauchmelder (XS01-WX, XS03-WX, XS01-M, XS0B-MR, etc.)
-- XSense CO-Melder (XC04-WX, XC01-M)
-- XSense Kombi-Melder Rauch + CO (SC07-WX, XP0A-MR) - **Volle Unterstützung inkl. Temperatur & CO-Werten!**
-- XSense Hitzemelder (XH02-M)
+### Access Control
+- **Door/Window Sensors**
+- **Motion Sensors** (PIR)
+- **Mailbox Alarms**
 
-### WLAN-Temperatur- & Luftfeuchtigkeitssensoren
-- **STH51** - WiFi Thermometer Hygrometer (Swiss Sensor, ±0.2°C Genauigkeit) - **Verbesserte Unterstützung**
-- **STH54** - WiFi Thermometer Hygrometer (3er-Pack Variante)
-- **STH0A** - WiFi Thermometer Hygrometer mit LCD (inkl. VPD & Taupunkt)
+### Climate Monitoring
+- **Temperature & Humidity Sensors**
+  - STH51 (Temperature/Humidity)
 
-### Wassersensoren
-- **SWS51** - Smart Water Leak Detector (mit eingebautem Alarm)
-- **SWS0A** - Smart Water Leak Detector (kompakt, nur Base Station Alarm)
+## ✨ Features
 
-### Andere Sensoren
-- **XH02-M** - Hitzemelder (Heat Detector)
-- **MA01** - Briefkasten-Alarm (Mailbox Alarm)
+- ✅ **Real-time Monitoring**: Instant notifications when smoke, CO, or water is detected
+- ✅ **Battery Monitoring**: Track battery levels for all wireless devices
+- ✅ **WiFi Signal Strength**: Monitor connection quality
+- ✅ **Flow Cards**: Create advanced automations with triggers, conditions, and actions
+- ✅ **Multi-language**: English and German support
+- ✅ **Auto-discovery**: All your X-Sense devices are automatically discovered
 
-## Installation
+## 📱 Installation
 
-1. Installiere die App über den Homey App Store oder lade sie manuell hoch
-2. Füge ein neues XSense Gerät hinzu
-3. Melde dich mit deinen XSense-Zugangsdaten an (E-Mail und Passwort)
-4. Wähle die Geräte aus, die du hinzufügen möchtest
+1. Install this app from the Homey App Store
+2. Go to **Devices** → **Add Device** → **X-Sense**
+3. Enter your X-Sense account credentials
+4. Your devices will be discovered automatically
+5. Start creating flows!
 
-## ⚠️ WICHTIG: Erstelle einen eigenen Account für Homey!
+### ⚠️ Important: Family Share Account Required
 
-X-Sense erlaubt **nur eine aktive Sitzung pro Account**.
-Wenn du denselben Account auf deinem Smartphone und in Homey nutzt, werden sich die Geräte gegenseitig ausloggen ("Another device is logged in").
-Dies führt zu Lücken in den Daten-Updates.
+**CRITICAL**: Do NOT use your main X-Sense account! The X-Sense app can only be logged in on ONE device at a time.
 
-**Lösung:**
-1.  Erstelle einen **zweiten X-Sense Account** (z.B. mit einer anderen E-Mail-Adresse).
-2.  Nutze die "Familienfreigabe" (Family Share) Funktion in der X-Sense App, um dein "Zuhause" mit diesem neuen Account zu teilen.
-3.  Benutze diesen neuen Account **ausschließlich für Homey**.
+**Recommended Setup**:
+1. Create a new X-Sense account (e.g., `homey@yourdomain.com`)
+2. In the X-Sense mobile app, use **Family Share** to share your devices with this new account
+3. Use this dedicated account for Homey
 
-## Capabilities
+This way, both your mobile app and Homey can stay connected simultaneously.
 
-Die App unterstützt folgende Capabilities:
+## 🔄 Flow Cards
 
-- `alarm_smoke` - Rauchmelder-Alarm
-- `alarm_co` - Kohlenmonoxid-Alarm
-- `alarm_battery` - Batterie-Warnung
-- `measure_battery` - Batteriestatus in %
-- `measure_temperature` - Temperatur in °C
-- `measure_humidity` - Luftfeuchtigkeit in %
-- `measure_co` - CO-Wert in ppm (für SC07-WX und andere CO-Melder)
+### Triggers (When...)
+- Smoke detected
+- CO detected  
+- Device muted
+- Temperature changed
+- Keypad event
+- SOS button pressed
 
-## Flow Cards
+### Conditions (And...)
+- Is smoke detected?
 
-### Triggers (Wenn...)
+### Actions (Then...)
+- Mute alarm
+- Test alarm
+- Trigger fire drill
 
-- **Rauch erkannt** - Wird ausgelöst, wenn Rauch erkannt wird
-- **CO erkannt** - Wird ausgelöst, wenn Kohlenmonoxid erkannt wird
-- **Batterie schwach** - Wird ausgelöst, wenn die Batterie schwach ist
-- **Gerät stummgeschaltet** - Wird ausgelöst, wenn ein Alarm stummgeschaltet wurde
-- **Wasserleck erkannt** - Wird ausgelöst, wenn ein Wasserleck erkannt wird
-- **Temperatur geändert** - Wird ausgelöst, wenn sich die Temperatur um mehr als 0,5°C ändert
-- **Luftfeuchtigkeit geändert** - Wird ausgelöst, wenn sich die Luftfeuchtigkeit um mehr als 5% ändert
+## 🛠️ Troubleshooting
 
-### Conditions (Und...)
+### Devices not discovered
+- Ensure your X-Sense devices are online in the mobile app
+- Check that you're using a Family Share account, not your main account
+- Try removing and re-adding the app
 
-- **Rauch ist erkannt/nicht erkannt** - Prüfe, ob aktuell Rauch erkannt wird
-- **CO ist erkannt/nicht erkannt** - Prüfe, ob aktuell CO erkannt wird
+### Connection issues
+- Verify your X-Sense credentials are correct
+- Make sure Homey has internet connectivity
+- Check if devices show as online in the X-Sense mobile app
 
-### Actions (Dann...)
+### Battery not updating
+- WiFi devices (SC07-WX): Battery status updates every ~60 seconds
+- Base station devices: Battery status is synced via MQTT shadows
 
-- **Alarm testen** - Führe einen Alarmtest durch (nur für Rauchmelder)
+## 📊 Technical Details
 
-## Beispiel-Flows
+### Capabilities
+- `alarm_smoke` - Smoke alarm status
+- `alarm_co` - CO alarm status
+- `alarm_water` - Water leak alarm
+- `alarm_contact` - Door/window contact
+- `alarm_motion` - Motion detection
+- `measure_temperature` - Temperature (°C)
+- `measure_humidity` - Humidity (%)
+- `measure_battery` - Battery level (%)
+- `measure_last_seen` - Last update timestamp
+- `measure_smoke_status` - Detailed smoke status
 
-### Rauchmelder-Alarm
-**Wenn** ein XSense Rauchmelder Rauch erkennt
-**Dann** sende eine Push-Benachrichtigung
-**Und** schalte alle Lichter ein
+### Data Sources
+- **MQTT Shadows**: Real-time device status via AWS IoT
+- **X-Sense Cloud API**: Device discovery and configuration
+- **Update Frequency**: 1-60 seconds depending on device type
 
-### Wasserleck-Alarm
-**Wenn** ein XSense Wassersensor ein Leck erkennt
-**Dann** sende eine dringende Benachrichtigung
-**Und** schalte das Hauptwasserventil ab
+## 🔐 Privacy & Security
 
-### Temperaturüberwachung
-**Wenn** die Temperatur auf über 25°C steigt
-**Dann** schalte die Klimaanlage ein
+- Your credentials are stored securely in Homey
+- Connection to X-Sense cloud uses encrypted HTTPS and MQTT over TLS
+- No data is shared with third parties
+- All processing happens locally on your Homey
 
-### Batterie-Warnung
-**Wenn** die Batterie eines XSense Geräts schwach ist
-**Dann** sende eine Benachrichtigung
+## 🐛 Bug Reports & Feature Requests
 
-### Wöchentlicher Test
-**Wenn** es Sonntag 10:00 Uhr ist
-**Dann** teste den Alarm aller Rauchmelder
+Found a bug or have a suggestion?  
+Please report it on GitHub: https://github.com/Meyblaubaer/com.xsense.svenm/issues
 
-### Gewächshaus-Überwachung
-**Wenn** die Luftfeuchtigkeit unter 60% fällt
-**Dann** schalte die Bewässerung ein
-**Und** sende eine Benachrichtigung
+## 📝 Changelog
 
-## ✅ AWS Cognito Integration - Vollständig Implementiert
+### v1.1.1 (2026-01-18)
+- ✅ Fixed battery status for WiFi devices (SC07-WX)
+- ✅ Enhanced shadow discovery system
+- ✅ Improved MQTT stability
 
-Die App nutzt jetzt **vollständige AWS Cognito SRP Authentication** für die Verbindung mit der XSense Cloud API.
+### v1.1.0
+- ✅ Added STH51 Temperature/Humidity sensor support
+- ✅ Comprehensive debug system
+- ✅ Multiple house support
 
-**Status:**
-- ✅ Komplette App-Struktur (Driver, Flow Cards, UI)
-- ✅ Alle drei Gerätetypen implementiert (Rauchmelder, Temperatur, Wasser)
-- ✅ **AWS Cognito Authentication vollständig implementiert**
-- ✅ **Auto-Relogin / Session Recovery** (Keine "Another device is logged in" Fehler mehr)
-- ✅ Thing Shadows API für Geräte-Daten (Verbesserte Parsing-Logik für STH51 & SC07-WX)
-- ⚠️ MQTT Real-time Updates (Basis implementiert)
+### v1.0.0
+- 🎉 Initial release
+- ✅ Smoke detector support
+- ✅ CO detector support
+- ✅ Basic flow cards
 
-**Funktionen:**
-- Automatischer Abruf der Cognito Credentials vom XSense Server
-- Sichere SRP-basierte Authentifizierung
-- Unterstützung für Houses, Stations und Devices
-- Intelligente Geräte-Erkennung (auch für "Station-only" Devices wie SC07-WX)
-- Thing Shadows API für aktuellen Gerätestatus
+## 👨‍💻 Developer
 
+**Sven-Christian Meyhoefer**  
+GitHub: [@Meyblaubaer](https://github.com/Meyblaubaer)
 
-## Fehlerbehebung
+## 📄 License
 
-### Geräte werden nicht gefunden
-- Stelle sicher, dass deine Geräte in der offiziellen XSense App sichtbar sind
-- Überprüfe deine Anmeldedaten
-- Stelle sicher, dass die Base Station online ist
+This app is provided as-is without warranty. X-Sense is a trademark of their respective owners.
 
-### Keine Echtzeit-Updates
-- Überprüfe die Internetverbindung deines Homey
-- Stelle sicher, dass die Base Station mit dem Internet verbunden ist
-- Die App versucht automatisch, die MQTT-Verbindung wiederherzustellen
+## 🙏 Support
 
-### Gerät zeigt "Nicht verfügbar"
-- Überprüfe, ob das Gerät in der XSense App online ist
-- Warte auf das nächste Update (alle 60 Sekunden)
-- Starte das Gerät in Homey neu
+If you find this app useful, please leave a review in the Homey App Store!
 
+---
 
-
-## Support
-
-Bei Problemen oder Fragen erstelle bitte ein Issue auf GitHub.
-
-## Lizenz
-
-GPL-3.0
-
-## Danksagung
-
-Basierend auf der Arbeit von [@Jarnsen](https://github.com/Jarnsen) und der [ha-xsense-component_test](https://github.com/Jarnsen/ha-xsense-component_test) Integration für Home Assistant.
+**Made with ❤️ for the Homey Community**
