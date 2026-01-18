@@ -60,5 +60,8 @@
   },
   "1.1.3": {
     "en": "Bug-Fixes for WiFi-Devices"
+  },
+  "1.1.4": {
+    "en": "Bugfixing with WiFi-Devices and API calls."
   }
 }
