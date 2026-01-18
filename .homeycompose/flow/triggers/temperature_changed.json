@@ -1,24 +1,21 @@
 {
   "title": {
-    "en": "Temperature changed",
-    "de": "Temperatur geändert"
+    "en": "The temperature changed",
+    "de": "Die Temperatur hat sich geändert"
+  },
+  "titleFormatted": {
+    "en": "The temperature changed to [[temperature]]°C",
+    "de": "Die Temperatur hat sich auf [[temperature]]°C geändert"
   },
   "tokens": [
-    {
-      "name": "device",
-      "type": "string",
-      "title": {
-        "en": "Device",
-        "de": "Gerät"
-      }
-    },
     {
       "name": "temperature",
       "type": "number",
       "title": {
-        "en": "Temperature (°C)",
-        "de": "Temperatur (°C)"
-      }
+        "en": "Temperature",
+        "de": "Temperatur"
+      },
+      "example": 20.5
     }
   ],
   "args": [

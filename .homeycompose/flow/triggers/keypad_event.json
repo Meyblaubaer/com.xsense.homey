@@ -1,32 +1,35 @@
 {
-    "title": {
-        "en": "Keypad Event",
-        "de": "Keypad-Ereignis"
+  "title": {
+    "en": "A keypad button was pressed",
+    "de": "Eine Keypad-Taste wurde gedrückt"
+  },
+  "titleFormatted": {
+    "en": "Button [[button]] was pressed on [[device]]",
+    "de": "Taste [[button]] wurde auf [[device]] gedrückt"
+  },
+  "tokens": [
+    {
+      "name": "button",
+      "type": "string",
+      "title": {
+        "en": "Button",
+        "de": "Taste"
+      }
     },
-    "tokens": [
-        {
-            "name": "device",
-            "type": "string",
-            "title": {
-                "en": "Device",
-                "de": "Gerät"
-            }
-        },
-        {
-            "name": "event_type",
-            "type": "string",
-            "title": {
-                "en": "Event Type",
-                "de": "Ereignistyp"
-            }
-        }
-    ],
-    "args": [
-        {
-            "type": "device",
-            "name": "device",
-            "filter": "driver_id=smoke-detector"
-        }
-    ],
-    "id": "keypad_event"
+    {
+      "name": "device",
+      "type": "string",
+      "title": {
+        "en": "Device",
+        "de": "Gerät"
+      }
+    }
+  ],
+  "args": [
+    {
+      "type": "device",
+      "name": "device",
+      "filter": "driver_id=smoke-detector"
+    }
+  ]
 }

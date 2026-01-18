@@ -71,8 +71,12 @@
     "triggers": [
       {
         "title": {
-          "en": "CO detected",
-          "de": "CO erkannt"
+          "en": "Carbon monoxide is detected",
+          "de": "Kohlenmonoxid wurde erkannt"
+        },
+        "titleFormatted": {
+          "en": "Carbon monoxide is detected by [[device]] ([[co_level]] ppm)",
+          "de": "Kohlenmonoxid wurde von [[device]] erkannt ([[co_level]] ppm)"
         },
         "tokens": [
           {
@@ -103,8 +107,12 @@
       },
       {
         "title": {
-          "en": "Device muted",
-          "de": "Gerät stummgeschaltet"
+          "en": "The alarm was muted",
+          "de": "Der Alarm wurde stummgeschaltet"
+        },
+        "titleFormatted": {
+          "en": "The alarm of [[device]] was muted",
+          "de": "Der Alarm von [[device]] wurde stummgeschaltet"
         },
         "tokens": [
           {
@@ -120,31 +128,35 @@
           {
             "type": "device",
             "name": "device",
-            "filter": "driver_id=smoke-detector"
+            "filter": "driver_id=smoke-detector|co-detector"
           }
         ],
         "id": "device_muted"
       },
       {
         "title": {
-          "en": "Keypad Event",
-          "de": "Keypad-Ereignis"
+          "en": "A keypad button was pressed",
+          "de": "Eine Keypad-Taste wurde gedrückt"
+        },
+        "titleFormatted": {
+          "en": "Button [[button]] was pressed on [[device]]",
+          "de": "Taste [[button]] wurde auf [[device]] gedrückt"
         },
         "tokens": [
+          {
+            "name": "button",
+            "type": "string",
+            "title": {
+              "en": "Button",
+              "de": "Taste"
+            }
+          },
           {
             "name": "device",
             "type": "string",
             "title": {
               "en": "Device",
               "de": "Gerät"
-            }
-          },
-          {
-            "name": "event_type",
-            "type": "string",
-            "title": {
-              "en": "Event Type",
-              "de": "Ereignistyp"
             }
           }
         ],
@@ -159,8 +171,12 @@
       },
       {
         "title": {
-          "en": "Smoke detected",
-          "de": "Rauch erkannt"
+          "en": "Smoke is detected",
+          "de": "Rauch wurde erkannt"
+        },
+        "titleFormatted": {
+          "en": "Smoke is detected by [[device]]",
+          "de": "Rauch wurde von [[device]] erkannt"
         },
         "tokens": [
           {
@@ -183,8 +199,12 @@
       },
       {
         "title": {
-          "en": "SOS Button pressed",
-          "de": "SOS-Knopf gedrückt"
+          "en": "The SOS button was pressed",
+          "de": "Die SOS-Taste wurde gedrückt"
+        },
+        "titleFormatted": {
+          "en": "The SOS button on [[device]] was pressed",
+          "de": "Die SOS-Taste auf [[device]] wurde gedrückt"
         },
         "tokens": [
           {
@@ -207,25 +227,22 @@
       },
       {
         "title": {
-          "en": "Temperature changed",
-          "de": "Temperatur geändert"
+          "en": "The temperature changed",
+          "de": "Die Temperatur hat sich geändert"
+        },
+        "titleFormatted": {
+          "en": "The temperature changed to [[temperature]]°C",
+          "de": "Die Temperatur hat sich auf [[temperature]]°C geändert"
         },
         "tokens": [
-          {
-            "name": "device",
-            "type": "string",
-            "title": {
-              "en": "Device",
-              "de": "Gerät"
-            }
-          },
           {
             "name": "temperature",
             "type": "number",
             "title": {
-              "en": "Temperature (°C)",
-              "de": "Temperatur (°C)"
-            }
+              "en": "Temperature",
+              "de": "Temperatur"
+            },
+            "example": 20.5
           }
         ],
         "args": [
@@ -241,8 +258,12 @@
     "conditions": [
       {
         "title": {
-          "en": "Smoke is !{{detected|not detected}}",
-          "de": "Rauch ist !{{erkannt|nicht erkannt}}"
+          "en": "Smoke !{{is|is not}} detected",
+          "de": "Rauch !{{wird|wird nicht}} erkannt"
+        },
+        "titleFormatted": {
+          "en": "Smoke !{{is|is not}} detected by [[device]]",
+          "de": "Rauch !{{wird|wird nicht}} von [[device]] erkannt"
         },
         "args": [
           {
@@ -257,36 +278,48 @@
     "actions": [
       {
         "title": {
-          "en": "Mute Alarm",
+          "en": "Mute the alarm",
           "de": "Alarm stummschalten"
+        },
+        "titleFormatted": {
+          "en": "Mute the alarm of [[device]]",
+          "de": "Alarm von [[device]] stummschalten"
         },
         "args": [
           {
             "type": "device",
             "name": "device",
-            "filter": "driver_id=smoke-detector"
+            "filter": "driver_id=smoke-detector|co-detector"
           }
         ],
         "id": "mute_alarm"
       },
       {
         "title": {
-          "en": "Test alarm",
+          "en": "Test the alarm",
           "de": "Alarm testen"
+        },
+        "titleFormatted": {
+          "en": "Test the alarm of [[device]]",
+          "de": "Alarm von [[device]] testen"
         },
         "args": [
           {
             "type": "device",
             "name": "device",
-            "filter": "driver_id=smoke-detector"
+            "filter": "driver_id=smoke-detector|co-detector"
           }
         ],
         "id": "test_alarm"
       },
       {
         "title": {
-          "en": "Trigger Fire Drill",
-          "de": "Hausalarm (Fire Drill) auslösen"
+          "en": "Start a fire drill",
+          "de": "Feueralarm-Test starten"
+        },
+        "hint": {
+          "en": "Tests all smoke detectors in the system",
+          "de": "Testet alle Rauchmelder im System"
         },
         "id": "trigger_fire_drill"
       }

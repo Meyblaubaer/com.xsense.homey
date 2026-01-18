@@ -1,13 +1,17 @@
 {
   "title": {
-    "en": "Test alarm",
+    "en": "Test the alarm",
     "de": "Alarm testen"
+  },
+  "titleFormatted": {
+    "en": "Test the alarm of [[device]]",
+    "de": "Alarm von [[device]] testen"
   },
   "args": [
     {
       "type": "device",
       "name": "device",
-      "filter": "driver_id=smoke-detector"
+      "filter": "driver_id=smoke-detector|co-detector"
     }
   ]
 }

@@ -1,7 +1,11 @@
 {
   "title": {
-    "en": "Smoke is !{{detected|not detected}}",
-    "de": "Rauch ist !{{erkannt|nicht erkannt}}"
+    "en": "Smoke !{{is|is not}} detected",
+    "de": "Rauch !{{wird|wird nicht}} erkannt"
+  },
+  "titleFormatted": {
+    "en": "Smoke !{{is|is not}} detected by [[device]]",
+    "de": "Rauch !{{wird|wird nicht}} von [[device]] erkannt"
   },
   "args": [
     {

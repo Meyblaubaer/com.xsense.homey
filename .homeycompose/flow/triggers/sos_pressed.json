@@ -1,24 +1,27 @@
 {
-    "title": {
-        "en": "SOS Button pressed",
-        "de": "SOS-Knopf gedrückt"
-    },
-    "tokens": [
-        {
-            "name": "device",
-            "type": "string",
-            "title": {
-                "en": "Device",
-                "de": "Gerät"
-            }
-        }
-    ],
-    "args": [
-        {
-            "type": "device",
-            "name": "device",
-            "filter": "driver_id=smoke-detector"
-        }
-    ],
-    "id": "sos_pressed"
+  "title": {
+    "en": "The SOS button was pressed",
+    "de": "Die SOS-Taste wurde gedrückt"
+  },
+  "titleFormatted": {
+    "en": "The SOS button on [[device]] was pressed",
+    "de": "Die SOS-Taste auf [[device]] wurde gedrückt"
+  },
+  "tokens": [
+    {
+      "name": "device",
+      "type": "string",
+      "title": {
+        "en": "Device",
+        "de": "Gerät"
+      }
+    }
+  ],
+  "args": [
+    {
+      "type": "device",
+      "name": "device",
+      "filter": "driver_id=smoke-detector"
+    }
+  ]
 }

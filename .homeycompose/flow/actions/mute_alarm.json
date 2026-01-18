@@ -1,14 +1,17 @@
 {
-    "title": {
-        "en": "Mute Alarm",
-        "de": "Alarm stummschalten"
-    },
-    "args": [
-        {
-            "type": "device",
-            "name": "device",
-            "filter": "driver_id=smoke-detector"
-        }
-    ],
-    "id": "mute_alarm"
+  "title": {
+    "en": "Mute the alarm",
+    "de": "Alarm stummschalten"
+  },
+  "titleFormatted": {
+    "en": "Mute the alarm of [[device]]",
+    "de": "Alarm von [[device]] stummschalten"
+  },
+  "args": [
+    {
+      "type": "device",
+      "name": "device",
+      "filter": "driver_id=smoke-detector|co-detector"
+    }
+  ]
 }

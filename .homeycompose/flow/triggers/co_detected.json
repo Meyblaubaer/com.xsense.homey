@@ -1,7 +1,11 @@
 {
   "title": {
-    "en": "CO detected",
-    "de": "CO erkannt"
+    "en": "Carbon monoxide is detected",
+    "de": "Kohlenmonoxid wurde erkannt"
+  },
+  "titleFormatted": {
+    "en": "Carbon monoxide is detected by [[device]] ([[co_level]] ppm)",
+    "de": "Kohlenmonoxid wurde von [[device]] erkannt ([[co_level]] ppm)"
   },
   "tokens": [
     {

@@ -1,7 +1,11 @@
 {
   "title": {
-    "en": "Smoke detected",
-    "de": "Rauch erkannt"
+    "en": "Smoke is detected",
+    "de": "Rauch wurde erkannt"
+  },
+  "titleFormatted": {
+    "en": "Smoke is detected by [[device]]",
+    "de": "Rauch wurde von [[device]] erkannt"
   },
   "tokens": [
     {

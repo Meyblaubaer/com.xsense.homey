@@ -1,7 +1,10 @@
 {
-    "title": {
-        "en": "Trigger Fire Drill",
-        "de": "Hausalarm (Fire Drill) auslösen"
-    },
-    "id": "trigger_fire_drill"
+  "title": {
+    "en": "Start a fire drill",
+    "de": "Feueralarm-Test starten"
+  },
+  "hint": {
+    "en": "Tests all smoke detectors in the system",
+    "de": "Testet alle Rauchmelder im System"
+  }
 }
