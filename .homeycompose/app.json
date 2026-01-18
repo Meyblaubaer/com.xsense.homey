@@ -12,8 +12,47 @@
     "de": "Ultimative Sicherheit. WICHTIG: Nutzen Sie einen dedizierten Homey-Account über X-Sense Family Share!"
   },
   "category": [
-    "security"
+    "security",
+    "climate"
   ],
+  "tags": {
+    "en": [
+      "xsense",
+      "x-sense",
+      "smoke detector",
+      "fire alarm",
+      "carbon monoxide",
+      "CO detector",
+      "security",
+      "temperature sensor",
+      "humidity sensor",
+      "hygrometer",
+      "water leak detector",
+      "flood sensor",
+      "door sensor",
+      "motion detector",
+      "PIR",
+      "mailbox",
+      "heat detector"
+    ],
+    "de": [
+      "xsense",
+      "x-sense",
+      "rauchmelder",
+      "feueralarm",
+      "kohlenmonoxid",
+      "CO-melder",
+      "sicherheit",
+      "temperatursensor",
+      "luftfeuchtigkeit",
+      "hygrometer",
+      "wassersensor",
+      "türsensor",
+      "bewegungsmelder",
+      "briefkasten",
+      "hitzemelder"
+    ]
+  },
   "brandColor": "#FF6B35",
   "images": {
     "large": "assets/images/large.png",
