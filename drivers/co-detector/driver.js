@@ -41,13 +41,13 @@ class CoDetectorDriver extends Homey.Driver {
         const deviceType = (device.deviceType || device.type || '').toUpperCase();
         this.log(`Processing device: ${device.deviceName}, type: ${deviceType}, id: ${device.id}`);
 
-        // FILTER: Only include CO Detectors (XC)
-        if (!deviceType.includes('XC') && !deviceType.includes('CO')) {
-          // Ensure we don't pick up others accidentally
-          if (!deviceType.startsWith('XC')) {
-            this.log(`Skipping device ${device.deviceName} (Type: ${deviceType}) - Not a dedicated CO detector`);
-            continue;
-          }
+        // FILTER: Only include CO-only Detectors (not Smoke/CO combos which are in smoke-detector)
+        // Supported types: XC01-M, XC04-WX, XC0C-iR, XC0C-MR
+        const coTypes = ['XC01-M', 'XC04-WX', 'XC0C-IR', 'XC0C-MR'];
+        
+        if (!coTypes.some(t => deviceType.toUpperCase().includes(t.toUpperCase().replace('-', '')))) {
+          this.log(`Skipping device ${device.deviceName} (Type: ${deviceType}) - Not a dedicated CO detector`);
+          continue;
         }
 
         // FIXED: Naming convention [Station Name] [Device Name]
@@ -179,16 +179,30 @@ class CoDetectorDriver extends Homey.Driver {
         const data = await api.getAllDevices();
         this.log(`API returned ${data.devices ? data.devices.length : 0} devices`);
 
+        // Log all devices for debugging
+        this.log('All devices from API:', data.devices.map(d => ({
+          name: d.deviceName || d.name,
+          type: d.type,
+          deviceType: d.deviceType,
+          id: d.id
+        })));
+
         // Process devices
         for (const device of data.devices) {
           const deviceType = (device.deviceType || device.type || '').toUpperCase();
 
-          // FILTER: Only include CO Detectors (XC)
-          if (!deviceType.includes('XC') && !deviceType.includes('CO')) {
-            if (!deviceType.startsWith('XC')) {
-              this.log(`Skipping device ${device.deviceName} (Type: ${deviceType}) - Not a dedicated CO detector`);
-              continue;
-            }
+          // FILTER: Only include CO-only Detectors (not Smoke/CO combos which are in smoke-detector)
+          // Supported types: XC01-M, XC04-WX, XC0C-iR, XC0C-MR, XC01-WX
+          // Also include any device with 'XC' prefix that doesn't have smoke capability
+          const coTypes = ['XC01-M', 'XC04-WX', 'XC0C-IR', 'XC0C-MR', 'XC01-WX', 'XC01WX'];
+          
+          // Check if it's a CO-only device (XC prefix but not SC which is smoke/CO combo)
+          const isCOOnly = coTypes.some(t => deviceType.includes(t.replace('-', ''))) ||
+                          (deviceType.startsWith('XC') && !deviceType.includes('SC'));
+          
+          if (!isCOOnly) {
+            this.log(`Skipping device ${device.deviceName} (Type: ${deviceType}) - Not a dedicated CO detector`);
+            continue;
           }
 
           // FIXED: Naming convention

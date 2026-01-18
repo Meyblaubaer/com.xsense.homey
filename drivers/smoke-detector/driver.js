@@ -196,10 +196,24 @@ class SmokeDetectorDriver extends Homey.Driver {
         for (const device of data.devices) {
           const deviceType = device.deviceType || device.type || '';
 
-          // FILTER: Only include Smoke (XS, SC, XP) detectors (CO XC are now in co-detector driver)
-          // Exclude: Heat (XH), Water (SWS), Temp (STH), Base Stations (SBS), CO (XC)
-          if (!/^(XS|SC|XP)/i.test(deviceType)) {
-            this.log(`Skipping device ${device.deviceName} (Type: ${deviceType}) - Not a smoke/CO detector`);
+          // FILTER: Only include Smoke detectors
+          // Supported types:
+          //   - XS01-M, XS01-WX: Standalone smoke detectors (WiFi)
+          //   - XS03-iWX, XS03-WX: Smoke detectors
+          //   - XS0B-MR, XS0B-iR, XS0D-MR: RF smoke detectors
+          //   - SC06-WX, SC07-WX, SC07-MR: Smoke/CO Combo (WiFi)
+          //   - XP02S-MR, XP0A-MR, XP0A-iR: Smoke/CO Combo
+          //   - SD11-MR: Smoke only
+          // Exclude: Heat (XH), Water (SWS), Temp (STH), Base Stations (SBS), CO-only (XC without smoke)
+          const smokeTypes = [
+            'XS01-M', 'XS01-WX', 'XS03-iWX', 'XS03-WX', 'XS0B-MR', 'XS0B-iR', 'XS0D-MR',
+            'SC06-WX', 'SC07-WX', 'SC07-MR',
+            'XP02S-MR', 'XP0A-MR', 'XP0A-iR', 'XP0A',
+            'SD11-MR'
+          ];
+          
+          if (!smokeTypes.some(t => deviceType.toUpperCase().includes(t.toUpperCase()))) {
+            this.log(`Skipping device ${device.deviceName || device.name} (Type: ${deviceType}) - Not a smoke detector`);
             continue;
           }
 

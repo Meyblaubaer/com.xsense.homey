@@ -179,11 +179,20 @@ class HeatDetectorDriver extends Homey.Driver {
         const data = await api.getAllDevices();
         this.log(`API returned ${data.devices ? data.devices.length : 0} devices`);
 
+        // Log all devices for debugging
+        this.log('All devices from API:', data.devices.map(d => ({
+          name: d.deviceName || d.name,
+          type: d.type,
+          deviceType: d.deviceType,
+          id: d.id
+        })));
+
         // Process devices
         for (const device of data.devices) {
           const deviceType = (device.deviceType || device.type || '').toUpperCase();
 
           // FILTER: Only include Heat Detectors (XH)
+          // Supported types: XH02-M, XH02-WX, XH0A-MR, and any containing 'HEAT'
           if (!deviceType.includes('XH') && !deviceType.includes('HEAT')) {
             this.log(`Skipping device ${device.deviceName} (Type: ${deviceType}) - Not a heat detector`);
             continue;

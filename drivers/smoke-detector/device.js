@@ -158,20 +158,19 @@ class SmokeDetectorDevice extends Homey.Device {
       }
 
       // Update battery level
-      // ONLY for devices that report batInfo (RF devices with replaceable batteries)
-      // WiFi devices with hardwired 10-year batteries (XP0A-iR, XC04-WX, XS01-WX, XC01-WX) don't report batInfo
-      // SC07-WX DOES report battery via mainpage devs structure, so it's NOT excluded
-      const deviceType = this.getSetting('deviceType') || '';
-      const isHardwiredWiFi = ['XP0A-iR', 'XC04-WX', 'XS01-WX', 'XC01-WX'].includes(deviceType);
-
-      if (!isHardwiredWiFi && this.hasCapability('measure_battery') && deviceData.batInfo !== undefined) {
+      // All X-Sense devices (including WiFi devices like XS01-WX, SC07-WX, XP0A-iR, XC04-WX)
+      // have replaceable batteries and report batInfo in their shadow data
+      // batInfo values: "3" = full, "2" = medium, "1" = low, "0" = critical
+      if (this.hasCapability('measure_battery')) {
         let batteryLevel = 100;
-        const bat = parseInt(deviceData.batInfo, 10);
-
-        if (!isNaN(bat)) {
-          // Assuming 3 is max based on logs ("batInfo": "3")
-          batteryLevel = Math.round((bat / 3) * 100);
-          if (batteryLevel > 100) batteryLevel = 100;
+        
+        if (deviceData.batInfo !== undefined) {
+          const bat = parseInt(deviceData.batInfo, 10);
+          if (!isNaN(bat)) {
+            // batInfo: 3 = 100%, 2 = 66%, 1 = 33%, 0 = 0%
+            batteryLevel = Math.round((bat / 3) * 100);
+            if (batteryLevel > 100) batteryLevel = 100;
+          }
         }
 
         await this.setCapabilityValue('measure_battery', batteryLevel);

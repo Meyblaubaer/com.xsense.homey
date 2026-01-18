@@ -23,13 +23,21 @@ class TemperatureSensorDriver extends Homey.Driver {
       const api = await this.homey.app.getAPIClient(username, password);
       const data = await api.getAllDevices();
 
+      // Log all devices for debugging
+      this.log('All devices from API:', data.devices.map(d => ({
+        name: d.deviceName || d.name,
+        type: d.type,
+        deviceType: d.deviceType,
+        id: d.id
+      })));
+
       // Filter for temperature/humidity sensors (STH51, STH0A, STH54)
       for (const device of data.devices) {
         const deviceType = (device.type || device.deviceType || '').toUpperCase();
 
         if (deviceType.includes('STH') || deviceType.includes('TEMP') || deviceType.includes('HYGROMETER')) {
           // FIXED: Use the name from API directly (which includes our "Type SN" fix from XSenseAPI)
-          let name = device.name || `XSense ${deviceType}`;
+          let name = device.name || device.deviceName || `XSense ${deviceType}`;
 
           devices.push({
             name: name,
@@ -40,7 +48,10 @@ class TemperatureSensorDriver extends Homey.Driver {
             },
             store: {
               email: username,
-              password: password
+              password: password,
+              stationId: device.stationId,
+              houseId: device.houseId,
+              deviceType: deviceType
             },
             settings: {
               device_id: device.id,
@@ -48,6 +59,8 @@ class TemperatureSensorDriver extends Homey.Driver {
               wifi_ssid: device.wifiSsid || 'N/A'
             }
           });
+        } else {
+          this.log(`Skipping device ${device.deviceName || device.name} (Type: ${deviceType}) - Not a temperature sensor`);
         }
       }
 

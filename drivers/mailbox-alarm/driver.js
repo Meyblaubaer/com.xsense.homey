@@ -174,11 +174,20 @@ class MailboxAlarmDriver extends Homey.Driver {
         const data = await api.getAllDevices();
         this.log(`API returned ${data.devices ? data.devices.length : 0} devices`);
 
+        // Log all devices for debugging
+        this.log('All devices from API:', data.devices.map(d => ({
+          name: d.deviceName || d.name,
+          type: d.type,
+          deviceType: d.deviceType,
+          id: d.id
+        })));
+
         // Process devices
         for (const device of data.devices) {
           const deviceType = (device.deviceType || device.type || '').toUpperCase();
 
           // FILTER: Only include Mailbox Alarms (SMA)
+          // Supported types: SMA11, and any containing 'MAIL' or 'MAILBOX'
           if (!deviceType.includes('SMA') && !deviceType.includes('MAIL')) {
             this.log(`Skipping device ${device.deviceName} (Type: ${deviceType}) - Not a mailbox alarm`);
             continue;

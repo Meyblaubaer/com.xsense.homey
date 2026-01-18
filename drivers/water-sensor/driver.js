@@ -23,13 +23,22 @@ class WaterSensorDriver extends Homey.Driver {
       const api = await this.homey.app.getAPIClient(username, password);
       const data = await api.getAllDevices();
 
-      // Filter for water leak sensors (SWS51, SWS0A)
+      // Log all devices for debugging
+      this.log('All devices from API:', data.devices.map(d => ({
+        name: d.deviceName || d.name,
+        type: d.type,
+        deviceType: d.deviceType,
+        id: d.id
+      })));
+
+      // Filter for water leak sensors
+      // Supported types: SWS51, SWS0A, XWS01, and any containing 'WATER' or 'LEAK' or 'FLOOD'
       for (const device of data.devices) {
         const deviceType = (device.type || device.deviceType || '').toUpperCase();
 
-        if (deviceType.includes('SWS') || deviceType.includes('WATER') || deviceType.includes('LEAK')) {
+        if (deviceType.includes('SWS') || deviceType.includes('XWS') || deviceType.includes('WATER') || deviceType.includes('LEAK') || deviceType.includes('FLOOD')) {
           // FIXED: Use the name from API directly (which includes our "Type SN" fix from XSenseAPI)
-          let name = device.name || `XSense ${deviceType}`;
+          let name = device.name || device.deviceName || `XSense ${deviceType}`;
 
           devices.push({
             name: name,
@@ -40,13 +49,18 @@ class WaterSensorDriver extends Homey.Driver {
             },
             store: {
               email: username,
-              password: password
+              password: password,
+              stationId: device.stationId,
+              houseId: device.houseId,
+              deviceType: deviceType
             },
             settings: {
               device_id: device.id,
               device_type: deviceType
             }
           });
+        } else {
+          this.log(`Skipping device ${device.deviceName || device.name} (Type: ${deviceType}) - Not a water sensor`);
         }
       }
 
