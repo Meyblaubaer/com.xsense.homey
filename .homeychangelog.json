@@ -66,5 +66,8 @@
   },
   "1.1.5": {
     "en": "Cloud Bugfixing, MQTT Bugfixing, Bugfixing for several Sensors"
+  },
+  "1.1.6": {
+    "en": "Bugfixing"
   }
 }

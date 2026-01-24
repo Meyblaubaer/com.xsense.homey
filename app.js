@@ -176,32 +176,37 @@ class XSenseApp extends Homey.App {
     this.apiClients.clear();
   }
   /**
-   * Store credentials in settings (SECURE: Encrypted)
+   * Store credentials in settings (with Base64 encoding)
+   * Note: Base64 is not encryption, but prevents plain-text visibility
    */
   async setStoredCredentials(email, password) {
     this.log(`Saving credentials for ${email}`);
     this.homey.settings.set('xsense_email', email);
 
     try {
-      const encryptedPassword = await this.homey.encrypt(password);
-      this.homey.settings.set('xsense_password_encrypted', encryptedPassword);
-      this.log('Password encrypted and stored');
+      // Use Base64 encoding (not true encryption, but obfuscates the password)
+      const encodedPassword = Buffer.from(password).toString('base64');
+      this.homey.settings.set('xsense_password_encoded', encodedPassword);
+      this.log('Password encoded and stored');
     } catch (error) {
-      this.error('Failed to encrypt password:', error);
+      this.error('Failed to encode password:', error);
       throw error;
     }
   }
 
   /**
-   * Get stored credentials (with decryption)
+   * Get stored credentials (with Base64 decoding)
    */
   async getStoredCredentials() {
     const email = this.homey.settings.get('xsense_email');
-    const encryptedPassword = this.homey.settings.get('xsense_password_encrypted');
-    const hasPassword = !!encryptedPassword;
+    // Check for new encoded format first, then fall back to old encrypted format
+    let encodedPassword = this.homey.settings.get('xsense_password_encoded');
+    const legacyEncrypted = this.homey.settings.get('xsense_password_encrypted');
+    
+    const hasPassword = !!(encodedPassword || legacyEncrypted);
     this.log(`Retrieving credentials: ${email}, hasPassword: ${hasPassword}`);
 
-    if (!encryptedPassword) {
+    if (!encodedPassword && !legacyEncrypted) {
       return {
         email: email,
         password: null
@@ -209,13 +214,24 @@ class XSenseApp extends Homey.App {
     }
 
     try {
-      const password = await this.homey.decrypt(encryptedPassword);
+      // If we have the new encoded format, use it
+      if (encodedPassword) {
+        const password = Buffer.from(encodedPassword, 'base64').toString('utf8');
+        return {
+          email: email,
+          password: password
+        };
+      }
+      
+      // Legacy: If only old encrypted format exists, we can't decrypt it
+      // User will need to re-enter credentials
+      this.log('Legacy encrypted password found - user needs to re-authenticate');
       return {
         email: email,
-        password: password
+        password: null
       };
     } catch (error) {
-      this.error('Failed to decrypt password:', error);
+      this.error('Failed to decode password:', error);
       throw error;
     }
   }

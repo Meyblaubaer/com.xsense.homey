@@ -1,5 +1,16 @@
 # Changelog
 
+## Version 1.1.6
+
+### 🔧 Bug Fixes
+
+**CRITICAL: Credential Storage Fix**
+- **FIX**: Fixed `this.homey.encrypt is not a function` error during device pairing
+- **ROOT CAUSE**: `homey.encrypt()` and `homey.decrypt()` methods do not exist in Homey SDK
+- **SOLUTION**: Replaced with Base64 encoding for password storage
+- **MIGRATION**: Users with existing encrypted passwords will need to re-authenticate
+- **TECHNICAL**: Changed from `xsense_password_encrypted` to `xsense_password_encoded` setting key
+
 ## Version 1.1.1
 
 ### 🔧 Bug Fixes
