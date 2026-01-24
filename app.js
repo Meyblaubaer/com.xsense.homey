@@ -176,25 +176,48 @@ class XSenseApp extends Homey.App {
     this.apiClients.clear();
   }
   /**
-   * Store credentials in settings
+   * Store credentials in settings (SECURE: Encrypted)
    */
-  setStoredCredentials(email, password) {
+  async setStoredCredentials(email, password) {
     this.log(`Saving credentials for ${email}`);
     this.homey.settings.set('xsense_email', email);
-    this.homey.settings.set('xsense_password', password);
+
+    try {
+      const encryptedPassword = await this.homey.encrypt(password);
+      this.homey.settings.set('xsense_password_encrypted', encryptedPassword);
+      this.log('Password encrypted and stored');
+    } catch (error) {
+      this.error('Failed to encrypt password:', error);
+      throw error;
+    }
   }
 
   /**
-   * Get stored credentials
+   * Get stored credentials (with decryption)
    */
-  getStoredCredentials() {
+  async getStoredCredentials() {
     const email = this.homey.settings.get('xsense_email');
-    const hasPassword = !!this.homey.settings.get('xsense_password');
+    const encryptedPassword = this.homey.settings.get('xsense_password_encrypted');
+    const hasPassword = !!encryptedPassword;
     this.log(`Retrieving credentials: ${email}, hasPassword: ${hasPassword}`);
-    return {
-      email: email,
-      password: this.homey.settings.get('xsense_password')
-    };
+
+    if (!encryptedPassword) {
+      return {
+        email: email,
+        password: null
+      };
+    }
+
+    try {
+      const password = await this.homey.decrypt(encryptedPassword);
+      return {
+        email: email,
+        password: password
+      };
+    } catch (error) {
+      this.error('Failed to decrypt password:', error);
+      throw error;
+    }
   }
 }
 

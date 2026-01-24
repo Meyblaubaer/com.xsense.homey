@@ -77,8 +77,8 @@ class MotionSensorDriver extends Homey.Driver {
     this.log('Pairing session started');
     this.homey.app.currentPairSession = session;
 
-    // Check for stored credentials
-    const stored = this.homey.app.getStoredCredentials();
+    // Check for stored credentials (FIXED: Async for encryption)
+    const stored = await this.homey.app.getStoredCredentials();
     if (stored.email && stored.password) {
       this.log('Found stored credentials, attempting auto-login');
       try {

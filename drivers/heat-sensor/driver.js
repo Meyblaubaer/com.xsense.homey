@@ -115,8 +115,8 @@ class HeatDetectorDriver extends Homey.Driver {
     // Store credentials in session object
     let credentials = null;
 
-    // Check for stored credentials
-    const stored = this.homey.app.getStoredCredentials();
+    // Check for stored credentials (FIXED: Async for encryption)
+    const stored = await this.homey.app.getStoredCredentials();
     if (stored.email && stored.password) {
       this.log('Found stored credentials, attempting auto-login');
       try {

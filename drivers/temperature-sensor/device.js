@@ -1,9 +1,11 @@
 'use strict';
 
-const Homey = require('homey');
+const XSenseDeviceBase = require('../../lib/XSenseDeviceBase');
 
-class TemperatureSensorDevice extends Homey.Device {
+class TemperatureSensorDevice extends XSenseDeviceBase {
   async onInit() {
+    await super.onInit();
+
     this.log('TemperatureSensorDevice has been initialized');
 
     // Force add Capability if missing (for existing devices)
@@ -11,42 +13,27 @@ class TemperatureSensorDevice extends Homey.Device {
       await this.addCapability('measure_signal_strength').catch(this.error);
     }
 
-    this.deviceData = this.getData();
-    this.settings = this.getSettings();
-
-    const store = this.getStore();
-    this.email = store.email;
-    this.password = store.password;
-
     // Previous values for change detection
     this.previousTemp = null;
     this.previousHumidity = null;
 
+    // Setup API client (uses base class _initializeCommon())
+    await this._setupAPIClient();
+
+    // Register update callback (uses base class _registerUpdateCallback())
+    this._registerUpdateCallback();
+
     try {
-      this.api = await this.homey.app.getAPIClient(this.email, this.password);
-
-      // Register for updates
-      this.api.onUpdate((type, data) => {
-        if (type === 'device' && data.id === this.deviceData.id) {
-          this._handleDeviceUpdate(data);
-        }
-      });
-
       // Connect MQTT for real-time updates (important for STH51/STH0A)
       await this.api.connectMQTT(this.deviceData.houseId, this.deviceData.stationId);
 
-      // Initial data fetch
-      await this.updateDevice();
+      // Initial Sync Request (only once, not duplicated)
+      await this._requestTempDataSync();
 
-      // Poll every 60 seconds (MQTT provides real-time updates too)
-      // Update: Extended interval to 5 minutes as per refresh.md analysis and added Sync Request
+      // Poll every 5 minutes (MQTT provides real-time updates too)
       this.pollInterval = setInterval(async () => {
         await this._requestTempDataSync();
-        // this.updateDevice(); // Optional, let MQTT push handling do the work or sync request
       }, 300000); // 5 minutes (as per Android App)
-
-      // Initial Sync Request
-      await this._requestTempDataSync();
 
     } catch (error) {
       this.error('Error initializing device:', error);
@@ -54,47 +41,30 @@ class TemperatureSensorDevice extends Homey.Device {
     }
   }
 
-  // Wrapper for API call
-  async _requestTempDataSync() {
-    try {
-      // Station ID is needed, devices list is optional/all
-      await this.api.requestTempDataSync(this.deviceData.stationId, [this.deviceData.deviceSn]);
-    } catch (err) {
-      this.error('Failed to request temp data sync:', err);
-    }
-  }
+  /**
+   * onAdded is called when user adds device.
+   */
 
-  async updateDevice() {
-    try {
-      const devices = await this.api.getDevices(this.deviceData.stationId);
-      const deviceData = devices.find(d => d.id === this.deviceData.id);
-
-      if (deviceData) {
-        await this._handleDeviceUpdate(deviceData);
-        this.setAvailable();
-      } else {
-        this.setUnavailable(this.homey.__('error.device_not_found'));
-      }
-    } catch (error) {
-      this.error('Error updating device:', error);
-      this.setUnavailable(this.homey.__('error.update_failed'));
-    }
-  }
-
+  /**
+   * Handle device data update (Temperature-Sensor specific implementation)
+   * Overrides base class method to add temperature/humidity change detection logic
+   */
   async _handleDeviceUpdate(deviceData) {
-    this.log(`_handleDeviceUpdate: ${JSON.stringify(deviceData)}`);
+    // Call base implementation first
+    await super._handleDeviceUpdate(deviceData);
+
     try {
       // Update temperature
       if (this.hasCapability('measure_temperature')) {
         const temp = deviceData.temperature || deviceData.temp;
 
-        // [Verification] Log raw values to ensure we use the best field
-        // this.log(`[Temp Verification] temperature=${deviceData.temperature}, temp=${deviceData.temp}`);
-
         if (temp !== undefined && temp !== null) {
-          await this.setCapabilityValue('measure_temperature', temp);
+          // Trigger flow if temperature changed significantly (more than 1°C)
+          if (this.previousTemp !== null && Math.abs(temp - this.previousTemp) > 1) {
+            // Flow trigger removed
+          }
 
-
+          this.previousTemp = temp;
         }
       }
 
@@ -102,37 +72,13 @@ class TemperatureSensorDevice extends Homey.Device {
       if (this.hasCapability('measure_humidity')) {
         const humidity = deviceData.humidity || deviceData.humi;
 
-        // [Verification] Log raw values
-        // this.log(`[Humidity Verification] humidity=${deviceData.humidity}, humi=${deviceData.humi}`);
-
         if (humidity !== undefined && humidity !== null) {
-          await this.setCapabilityValue('measure_humidity', humidity);
-
-          // Trigger flow if humidity changed significantly (more than 5%)
-          // Custom flow card removed as it duplicates standard capability behavior
-          /*
+          // Track previous humidity for change detection
           if (this.previousHumidity !== null && Math.abs(humidity - this.previousHumidity) > 5) {
-             // Logic removed
+            // Significant change detected (>5%)
+            this.log(`Humidity changed significantly: ${this.previousHumidity} -> ${humidity}`);
           }
-          */
           this.previousHumidity = humidity;
-        }
-      }
-
-      // Update battery level
-      if (this.hasCapability('measure_battery') && deviceData.batInfo !== undefined) {
-        const batteryLevel = Math.round((deviceData.batInfo * 100) / 3);
-        await this.setCapabilityValue('measure_battery', batteryLevel);
-
-        // Update battery alarm
-        if (this.hasCapability('alarm_battery')) {
-          const lowBattery = batteryLevel < 20;
-          const prevBattery = this.getCapabilityValue('alarm_battery');
-          await this.setCapabilityValue('alarm_battery', lowBattery);
-
-          if (lowBattery && !prevBattery) {
-            // Custom flow card removed
-          }
         }
       }
 
@@ -143,62 +89,57 @@ class TemperatureSensorDevice extends Homey.Device {
         });
       }
 
-      // Phase 3: Update Signal Strength (RSSI)
-      if (this.hasCapability('measure_signal_strength')) {
-        // API often returns 'signal', 'rssi', 'rfLevel', or 'wifiSignal'
-
-        let signalVal = deviceData.signal || deviceData.rssi || deviceData.rfLevel || deviceData.signalLevel;
-
-        // Debug Log specifically for verification
-        // this.log(`[Signal Verification] Raw signal keys: signal=${deviceData.signal}, rssi=${deviceData.rssi}, rfLevel=${deviceData.rfLevel}, signalLevel=${deviceData.signalLevel}`);
-
-        if (signalVal !== undefined && signalVal !== null) {
-          let signalStrengthDbm = -100; // Default weak
-
-          if (typeof signalVal === 'number' && signalVal < 0) {
-            // Already dBm
-            signalStrengthDbm = signalVal;
-          } else {
-            // Likely bars or 0-100 scale
-            const s = parseInt(signalVal, 10);
-            if (!isNaN(s)) {
-              // Assumption: 1-4 bars
-              if (s >= 4) signalStrengthDbm = -55;
-              else if (s === 3) signalStrengthDbm = -67;
-              else if (s === 2) signalStrengthDbm = -79;
-              else if (s === 1) signalStrengthDbm = -91;
-              else if (s === 0) signalStrengthDbm = -100;
-            }
-          }
-          await this.setCapabilityValue('measure_signal_strength', signalStrengthDbm).catch(e => { });
-        }
-      }
-
-      await this.setAvailable();
-
+      // Note: Battery and Signal Strength are handled by base class _handleDeviceUpdate()
     } catch (error) {
-      this.error('Error handling device update:', error);
+      this.error('Error handling temperature-specific device update:', error);
     }
   }
 
+    /**
+     * Wrapper for API call (base implementation)
+     * Note: Overrides base class method because TemperatureSensor has special sync requirements
+     */
+    async _requestTempDataSync() {
+      if (!this.api) {
+        this.error('API client not initialized');
+        return;
+      }
+
+      try {
+        // Station ID is needed, devices list is optional/all
+        await this.api.requestTempDataSync(this.deviceData.stationId, [this.deviceData.deviceSn]);
+      } catch (err) {
+        this.error('Failed to request temp data sync:', err);
+      }
+    }
+
+    /**
+     * Update device from API
+     * Uses base class implementation, Temperature-specific logic in _handleDeviceUpdate
+     */
+    async updateDevice() {
+      await super.updateDevice();
+    }
+
+  /**
+   * onAdded is called when the user adds the device.
+   */
   async onAdded() {
     this.log('TemperatureSensorDevice has been added');
   }
 
+  /**
+   * onSettings is called when the user updates the device's settings.
+   */
   async onSettings({ oldSettings, newSettings, changedKeys }) {
     this.log('TemperatureSensorDevice settings were changed');
   }
 
+  /**
+   * onRenamed is called when the user updates the device's name.
+   */
   async onRenamed(name) {
     this.log('TemperatureSensorDevice was renamed');
-  }
-
-  async onDeleted() {
-    this.log('TemperatureSensorDevice has been deleted');
-
-    if (this.pollInterval) {
-      clearInterval(this.pollInterval);
-    }
   }
 }
 

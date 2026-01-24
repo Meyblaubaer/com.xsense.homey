@@ -9,6 +9,8 @@
     "initialization_failed": "Device initialization failed",
     "device_not_found": "Device not found",
     "update_failed": "Failed to update device data",
-    "test_alarm_failed": "Failed to test alarm"
+    "test_alarm_failed": "Failed to test alarm",
+    "another_device_logged_in": "Another device is logged in to your X-Sense account. Please log out of X-Sense app on ALL devices.",
+    "session_expired_retry_failed": "Session expired and re-login failed. Please check your credentials in app settings."
   }
 }

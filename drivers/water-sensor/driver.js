@@ -76,8 +76,8 @@ class WaterSensorDriver extends Homey.Driver {
     // Keep this as fallback for now, but rely on passed session
     this.homey.app.currentPairSession = session;
 
-    // Check for stored credentials
-    const stored = this.homey.app.getStoredCredentials();
+    // Check for stored credentials (FIXED: Async for encryption)
+    const stored = await this.homey.app.getStoredCredentials();
     if (stored.email && stored.password) {
       this.log('Found stored credentials, attempting auto-login');
       try {

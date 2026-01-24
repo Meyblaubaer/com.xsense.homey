@@ -9,6 +9,8 @@
     "initialization_failed": "Geräteinitialisierung fehlgeschlagen",
     "device_not_found": "Gerät nicht gefunden",
     "update_failed": "Aktualisierung der Gerätedaten fehlgeschlagen",
-    "test_alarm_failed": "Alarmtest fehlgeschlagen"
+    "test_alarm_failed": "Alarmtest fehlgeschlagen",
+    "another_device_logged_in": "Ein anderes Gerät hat sich bei Ihrem X-Sense-Konto angemeldet. Bitte melden Sie sich aus der X-Sense App auf ALLEN Geräten ab.",
+    "session_expired_retry_failed": "Session abgelaufen und erneute Anmeldung fehlgeschlagen. Bitte überprüfen Sie Ihre Anmeldedaten in den App-Einstellungen."
   }
 }
