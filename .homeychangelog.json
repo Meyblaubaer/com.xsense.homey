@@ -63,5 +63,8 @@
   },
   "1.1.4": {
     "en": "Bugfixing with WiFi-Devices and API calls."
+  },
+  "1.1.5": {
+    "en": "Cloud Bugfixing, MQTT Bugfixing, Bugfixing for several Sensors"
   }
 }
