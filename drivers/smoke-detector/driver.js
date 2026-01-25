@@ -118,9 +118,9 @@ class SmokeDetectorDriver extends Homey.Driver {
    */
   async onPair(session) {
     this.log('Pairing session started');
-
-    // Store credentials in session object
-    let credentials = null;
+    
+    // Store session reference for other methods (like other drivers do)
+    this.homey.app.currentPairSession = session;
 
     // Check for stored credentials (FIXED: Async for encryption)
     const stored = await this.homey.app.getStoredCredentials();
@@ -130,20 +130,14 @@ class SmokeDetectorDriver extends Homey.Driver {
       this.log('Found stored credentials, attempting auto-login');
       try {
         await this.homey.app.getAPIClient(stored.email, stored.password);
-        credentials = {
+        // FIX: Store credentials in session object (like all other working drivers)
+        session.credentials = {
           username: stored.email,
           password: stored.password
         };
         this.log('Auto-login successful, advancing view');
-        // Add small delay to ensure UI is ready
-        await new Promise(resolve => setTimeout(resolve, 1000));
-        // FIX: Prüfen ob next() Methode existiert (robuster Ansatz)
-        if (typeof session.next === 'function') {
-          await session.next();
-        } else {
-          // Fallback: Nutze showView wie alle anderen Drivers
-          await session.showView('list_devices');
-        }
+        // Use showView like all other drivers (more reliable than next())
+        await session.showView('list_devices');
       } catch (error) {
         this.log('Auto-login failed with stored credentials:', error);
       }
@@ -158,8 +152,8 @@ class SmokeDetectorDriver extends Homey.Driver {
         // Try to authenticate
         const api = await this.homey.app.getAPIClient(username, password);
 
-        // Store credentials in closure variable
-        credentials = {
+        // FIX: Store credentials in session object (like all other working drivers)
+        session.credentials = {
           username: username,
           password: password
         };
@@ -167,11 +161,10 @@ class SmokeDetectorDriver extends Homey.Driver {
         // Save for future
         this.homey.app.setStoredCredentials(username, password);
 
-        this.log('Login successful, credentials stored');
+        this.log('Login successful, credentials stored in session');
         return true;
       } catch (error) {
         this.error('Login failed:', error);
-        // THROW RAW ERROR TO DEBUG "INSTALL" VS "RUN"
         throw new Error(`Login failed: ${error.message || error}`);
       }
     });
@@ -180,14 +173,15 @@ class SmokeDetectorDriver extends Homey.Driver {
     session.setHandler('list_devices', async () => {
       this.log('list_devices handler called');
 
-      if (!credentials) {
+      // FIX: Check session.credentials (like all other working drivers)
+      if (!session.credentials) {
         this.error('No credentials available in list_devices handler');
         throw new Error('Please login first');
       }
 
       const devices = [];
       try {
-        const { username, password } = credentials;
+        const { username, password } = session.credentials;
         this.log(`Getting devices for user: ${username}`);
 
         // Get API client

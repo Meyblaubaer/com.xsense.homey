@@ -1,5 +1,17 @@
 # Changelog
 
+## Version 1.1.7
+
+### 🔧 Bug Fixes
+
+**CRITICAL: Pairing Session Credentials Fix**
+- **FIX**: Fixed "Anmeldefenster schließt sich nach Login" bug during device pairing
+- **ROOT CAUSE**: Several drivers (smoke-detector, co-detector, heat-sensor, mailbox-alarm) stored credentials in a local closure variable instead of `session.credentials`
+- **SYMPTOM**: After successful login, clicking "Next" would close the pairing window because `list_devices` handler couldn't access the credentials
+- **SOLUTION**: Changed all affected drivers to use `session.credentials` consistently (like door-sensor, motion-sensor, water-sensor, temperature-sensor)
+- **AFFECTED DRIVERS**: smoke-detector, co-detector, heat-sensor, mailbox-alarm
+- **ALSO FIXED**: Removed unnecessary `navigation.next` from smoke-detector's login_credentials step
+
 ## Version 1.1.6
 
 ### 🔧 Bug Fixes

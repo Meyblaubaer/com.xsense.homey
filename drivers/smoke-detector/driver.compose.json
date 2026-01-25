@@ -35,9 +35,6 @@
     {
       "id": "login_credentials",
       "template": "login_credentials",
-      "navigation": {
-        "next": "list_devices"
-      },
       "options": {
         "title": {
           "en": "Login to XSense",
